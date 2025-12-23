@@ -1,12 +1,12 @@
 @import "tailwindcss";
-@import url('https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;0,800;0,900;1,400&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Manrope:wght@400;500;600;700;800&display=swap');
 
 /* ============================================
    THEME CONFIGURATION (Tailwind v4)
-   Ethereal Mysticism Theme (Teal/Lavender + Serif)
+   Modern Digital / Ethereal Tech Theme
    ============================================ */
 @theme {
-  /* Life Path Colors - Ethereal Pastels */
+  /* Life Path Colors - Vibrant Tech Pastels */
   --color-lifepath-1: #FFB7B2;
   /* Soft Coral */
   --color-lifepath-2: #FFDAC1;
@@ -32,56 +32,50 @@
   --color-lifepath-33: #D291BC;
   /* Orchid */
 
-  /* Core Theme Colors */
-  --color-bg-primary: #1A1825;
-  /* Deep Violet Charcoal */
-  --color-bg-secondary: #242132;
-  /* Lighter Violet Charcoal */
-  --color-bg-card: #2E2942;
-  /* Rich Purple Grey */
-  --color-bg-elevated: #393352;
-  /* Elevated Purple Grey */
+  /* Core Theme Colors - Deep Space Tech */
+  --color-bg-primary: #0F0F16;
+  /* Almost Black */
+  --color-bg-secondary: #181824;
+  /* Dark Grey-Blue */
+  --color-bg-card: #1E1E2C;
+  /* Card Background */
+  --color-bg-elevated: #2A2A3D;
+  /* Hover/Modal Background */
 
-  /* Text Colors */
-  --color-text-primary: #F2F0F9;
-  /* Off-white w/ purple tint */
-  --color-text-secondary: #B8B2CC;
-  /* Muted lavender grey */
-  --color-text-muted: #8F87A6;
-  /* Deep muted purple */
+  /* Text Colors - High Contrast Digital */
+  --color-text-primary: #FFFFFF;
+  --color-text-secondary: #A0A0B0;
+  --color-text-muted: #6C6C7D;
 
   /* Accent Colors */
   --color-accent-primary: #C77DFF;
-  /* Soft Electric Lavender */
+  /* Lavender */
   --color-accent-secondary: #9D4EDD;
-  /* Deep Lavender */
-  --color-accent-teal: #73D2DE;
-  /* Soft Teal */
+  /* Deep Purple */
+  --color-accent-teal: #00F0FF;
+  /* Cyan/Teal - brighter for tech feel */
   --color-accent-gold: #FFD166;
-  /* Soft Gold */
+  /* Tech Gold */
 
   /* Derived Accents */
-  --color-accent-glow: rgba(199, 125, 255, 0.4);
-  --color-accent-teal-glow: rgba(115, 210, 222, 0.4);
+  --color-accent-glow: rgba(199, 125, 255, 0.5);
+  --color-accent-teal-glow: rgba(0, 240, 255, 0.4);
 
   /* Border Colors */
-  --color-border-subtle: rgba(184, 178, 204, 0.1);
-  --color-border-default: rgba(184, 178, 204, 0.2);
-  --color-border-accent: rgba(199, 125, 255, 0.4);
+  --color-border-subtle: rgba(255, 255, 255, 0.05);
+  --color-border-default: rgba(255, 255, 255, 0.1);
+  --color-border-accent: rgba(199, 125, 255, 0.3);
 
-  /* Font Families - SERIF ONLY */
-  --font-sans: 'Lora', serif;
-  /* Body text is now Serif */
-  --font-mono: 'Lora', serif;
-  /* Fallback for mono to maintain vibe (or use a serif-mono if strictly needed, but Lora fits the prompt better) */
-  --font-display: 'Playfair Display', serif;
-  /* Headings */
+  /* Font Families - MODERN SANS SERIF */
+  --font-sans: 'Inter', system-ui, sans-serif;
+  --font-display: 'Manrope', system-ui, sans-serif;
+  --font-mono: 'Ui-Monospace', 'SFMono-Regular', 'Menlo', 'Monaco', 'Consolas', monospace;
 
   /* Custom Animations */
-  --animate-fade-in: fadeIn 0.6s ease-out;
-  --animate-slide-up: slideUp 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+  --animate-fade-in: fadeIn 0.4s ease-out;
+  --animate-slide-up: slideUp 0.5s cubic-bezier(0.16, 1, 0.3, 1);
   --animate-float: float 6s ease-in-out infinite;
-  --animate-glow: glow 3s ease-in-out infinite alternate;
+  --animate-pulse-slow: pulseSlow 4s ease-in-out infinite;
 }
 
 /* ============================================
@@ -96,14 +90,15 @@
   body,
   #root {
     @apply min-h-screen;
+    font-feature-settings: "cv11", "ss01";
+    /* Inter formatting features */
   }
 
   body {
-    @apply bg-bg-primary text-text-primary font-sans;
+    @apply bg-bg-primary text-text-primary font-sans selection:bg-accent-teal/30;
     background-image:
-      radial-gradient(circle at 10% 20%, rgba(115, 210, 222, 0.08) 0%, transparent 40%),
-      radial-gradient(circle at 90% 80%, rgba(199, 125, 255, 0.1) 0%, transparent 40%),
-      radial-gradient(circle at 50% 50%, rgba(26, 24, 37, 1) 100%, transparent 100%);
+      radial-gradient(circle at 15% 50%, rgba(115, 210, 222, 0.05) 0%, transparent 25%),
+      radial-gradient(circle at 85% 30%, rgba(199, 125, 255, 0.08) 0%, transparent 25%);
   }
 
   h1,
@@ -112,7 +107,12 @@
   h4,
   h5,
   h6 {
-    @apply font-display font-bold text-text-primary tracking-wide;
+    @apply font-display font-bold text-text-primary tracking-tight;
+  }
+
+  /* Smooth scrolling */
+  html {
+    scroll-behavior: smooth;
   }
 
   /* Custom scrollbar */
@@ -126,11 +126,7 @@
   }
 
   ::-webkit-scrollbar-thumb {
-    @apply bg-bg-elevated rounded-full;
-  }
-
-  ::-webkit-scrollbar-thumb:hover {
-    @apply bg-accent-primary/60;
+    @apply bg-bg-elevated rounded-full hover:bg-accent-primary/60 transition-colors;
   }
 }
 
@@ -139,90 +135,74 @@
    ============================================ */
 @layer components {
 
-  /* Hero Card Container */
+  /* Modern Card Container */
   .hero-card {
-    @apply bg-bg-card border border-border-default rounded-t-[3rem] rounded-b-[2rem] overflow-hidden relative;
+    @apply bg-bg-card border border-border-default rounded-3xl overflow-hidden relative backdrop-blur-sm;
     box-shadow:
       0 0 0 1px rgba(255, 255, 255, 0.05),
-      0 20px 60px -15px rgba(0, 0, 0, 0.6),
-      0 0 100px -30px rgba(115, 210, 222, 0.15),
-      0 0 100px -30px rgba(199, 125, 255, 0.15);
+      0 24px 48px -12px rgba(0, 0, 0, 0.5);
   }
 
-  /* Number Display */
+  /* Number Display - Big Geometric Sans */
   .number-display {
-    @apply text-7xl md:text-9xl font-display font-medium italic;
-    /* Using Playfair for numbers instead of mono for that editorial look */
-    text-shadow: 0 0 50px var(--color-accent-glow);
+    @apply text-8xl md:text-9xl font-display font-extrabold tracking-tighter;
+    background: linear-gradient(180deg, #FFFFFF 0%, rgba(255, 255, 255, 0.7) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    filter: drop-shadow(0 0 30px var(--color-accent-glow));
   }
 
-  /* Input Field */
+  /* Modern Input Field */
   .input-field {
-    @apply w-full px-5 py-4 rounded-xl bg-bg-secondary border border-border-default text-text-primary placeholder-text-muted transition-all duration-300 font-sans text-lg;
-    box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.2);
+    @apply w-full px-5 py-4 rounded-xl bg-bg-secondary border border-border-default text-text-primary placeholder-text-muted transition-all duration-200 font-sans text-base;
   }
 
   .input-field:focus {
-    @apply outline-none border-accent-teal/50 ring-1 ring-accent-teal/30;
-    box-shadow:
-      inset 0 2px 4px rgba(0, 0, 0, 0.2),
-      0 0 20px rgba(115, 210, 222, 0.1);
+    @apply outline-none border-accent-teal/60 ring-1 ring-accent-teal/30 bg-bg-elevated;
   }
 
-  /* Button Primary - Gradient Teal to Lavender */
+  /* Primary Button - Tech Gradient */
   .btn-primary {
-    @apply px-8 py-3 rounded-full font-display font-bold tracking-wider uppercase text-sm transition-all cursor-pointer text-bg-primary relative overflow-hidden;
-    background: linear-gradient(135deg, var(--color-accent-teal) 0%, var(--color-accent-primary) 100%);
-    box-shadow: 0 4px 25px -5px rgba(115, 210, 222, 0.4);
+    @apply px-8 py-4 rounded-xl font-display font-bold tracking-wide uppercase text-xs transition-all cursor-pointer text-bg-primary relative overflow-hidden;
+    background: linear-gradient(90deg, var(--color-accent-teal) 0%, var(--color-accent-primary) 100%);
   }
 
   .btn-primary:hover {
-    transform: translateY(-2px) scale(1.02);
-    box-shadow: 0 8px 35px -5px rgba(199, 125, 255, 0.5);
-    background: linear-gradient(135deg, var(--color-accent-teal) 20%, var(--color-accent-primary) 120%);
+    box-shadow: 0 0 30px rgba(115, 210, 222, 0.3);
+    transform: translateY(-1px);
   }
 
   .btn-primary:active {
-    transform: translateY(0) scale(0.98);
+    transform: translateY(0);
   }
 
-  /* Button Secondary */
+  /* Secondary Button - Glassy */
   .btn-secondary {
-    @apply px-6 py-3 rounded-full font-display font-bold tracking-wider uppercase text-sm transition-all cursor-pointer bg-transparent text-text-secondary border border-border-default hover:text-text-primary hover:border-accent-teal/50 hover:bg-bg-elevated/30;
+    @apply px-6 py-3 rounded-xl font-display font-semibold tracking-wide text-sm transition-all cursor-pointer bg-white/5 text-text-secondary border border-border-default hover:text-text-primary hover:border-white/20 hover:bg-white/10;
   }
 
-  /* Glass Card */
+  /* Glass Card - Modern Frosted */
   .glass-card {
-    @apply bg-bg-card/60 backdrop-blur-2xl border border-border-default/50 rounded-2xl;
-    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+    @apply bg-white/5 backdrop-blur-md border border-white/10 rounded-2xl;
   }
 
-  /* Master Number Badge */
+  /* Master Number Badge - Tech Pill */
   .master-badge {
-    @apply inline-flex items-center px-4 py-1 rounded-full text-xs font-bold tracking-widest uppercase bg-accent-gold/10 text-accent-gold border border-accent-gold/20;
-    box-shadow: 0 0 15px rgba(255, 209, 102, 0.2);
+    @apply inline-flex items-center px-3 py-1 rounded-md text-[10px] font-bold tracking-widest uppercase bg-accent-gold/10 text-accent-gold border border-accent-gold/20;
   }
 
-  /* Navigation Link */
+  /* Navigation Link - Modern Pill Hover */
   .nav-link {
-    @apply text-text-secondary font-display italic text-lg hover:text-accent-teal transition-all duration-300 relative;
-  }
-
-  .nav-link::after {
-    content: '';
-    @apply absolute -bottom-1 left-0 w-0 h-px bg-accent-teal transition-all duration-300;
-  }
-
-  .nav-link:hover::after {
-    @apply w-full;
+    @apply px-4 py-2 rounded-lg text-sm font-medium text-text-secondary transition-all hover:text-text-primary hover:bg-white/5;
   }
 
   .nav-link-active {
-    @apply text-accent-teal;
+    @apply text-accent-teal bg-accent-teal/10;
   }
 
-  .nav-link-active::after {
-    @apply w-full;
+  /* Icon Containers (for generated images) */
+  .icon-container {
+    @apply w-12 h-12 rounded-xl flex items-center justify-center bg-bg-elevated border border-border-subtle shadow-inner;
   }
 }
 
@@ -241,7 +221,7 @@
 
 @keyframes slideUp {
   from {
-    transform: translateY(30px);
+    transform: translateY(20px);
     opacity: 0;
   }
 
@@ -259,17 +239,19 @@
   }
 
   50% {
-    transform: translateY(-10px);
+    transform: translateY(-6px);
   }
 }
 
-@keyframes glow {
-  from {
-    box-shadow: 0 0 20px rgba(199, 125, 255, 0.15);
+@keyframes pulseSlow {
+
+  0%,
+  100% {
+    opacity: 1;
   }
 
-  to {
-    box-shadow: 0 0 45px rgba(115, 210, 222, 0.25);
+  50% {
+    opacity: 0.7;
   }
 }
 
@@ -287,8 +269,17 @@
   }
 
   .hero-card {
-    @apply shadow-none border border-black rounded-none;
+    @apply shadow-none border border-black rounded-none text-black bg-white;
     page-break-inside: avoid;
+  }
+
+  .number-display {
+    /* Reset gradient text for print */
+    background: none;
+    -webkit-text-fill-color: black;
+    color: black;
+    text-shadow: none;
+    filter: none;
   }
 
   * {

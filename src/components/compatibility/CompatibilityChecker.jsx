@@ -40,10 +40,10 @@ const CompatibilityChecker = () => {
                         Back
                     </Button>
                 </div>
-                <div className="text-center py-12 bg-white rounded-lg shadow">
-                    <Heart className="w-16 h-16 mx-auto text-gray-300 mb-4" />
-                    <h2 className="text-2xl font-display mb-2">Need More Profiles</h2>
-                    <p className="text-gray-600 mb-4">
+                <div className="text-center py-12 bg-bg-card rounded-3xl border border-border-default shadow-lg">
+                    <Heart className="w-16 h-16 mx-auto text-accent-primary/50 mb-4" />
+                    <h2 className="text-2xl font-display mb-2 text-text-primary">Need More Profiles</h2>
+                    <p className="text-text-secondary mb-4">
                         You need at least 2 profiles to check compatibility.
                     </p>
                     <Button onClick={() => navigate('/')} variant="primary">
@@ -76,38 +76,37 @@ const CompatibilityChecker = () => {
                 </Button>
             </div>
 
-            <div className="bg-white rounded-lg shadow-lg overflow-hidden">
-                <div className="bg-bg-charcoal text-bg-cream px-6 py-4">
-                    <h1 className="text-2xl font-display flex items-center gap-2">
-                        <Heart className="w-6 h-6" />
-                        Compatibility Checker
+            <div className="bg-bg-card/80 backdrop-blur-xl border border-border-default rounded-3xl shadow-2xl overflow-hidden">
+                <div className="bg-accent-primary/10 px-8 py-6 border-b border-border-default">
+                    <h1 className="text-2xl font-display font-bold flex items-center gap-3 text-white">
+                        <Heart className="w-6 h-6 text-accent-primary" />
+                        Compatibility Matrix
                     </h1>
-                    <p className="text-sm opacity-80 mt-1">
-                        Compare Life Path numbers to discover relationship dynamics
+                    <p className="text-sm text-text-secondary mt-1">
+                        Compare Life Path resonance and relationship dynamics
                     </p>
                 </div>
 
-                <div className="p-6">
+                <div className="p-8">
                     {!showResult ? (
-                        <div className="space-y-6">
+                        <div className="space-y-8">
                             {/* Profile Selection */}
-                            <div className="grid md:grid-cols-2 gap-6">
+                            <div className="grid md:grid-cols-2 gap-8">
                                 {/* Profile 1 */}
                                 <div>
-                                    <label className="block text-sm font-medium mb-2">
-                                        Person 1
+                                    <label className="block text-sm font-bold uppercase tracking-wider text-text-muted mb-3">
+                                        Partner A
                                     </label>
                                     <select
                                         value={profile1Id}
                                         onChange={(e) => setProfile1Id(e.target.value)}
-                                        className="input-field"
+                                        className="input-field bg-bg-elevated"
                                     >
-                                        <option value="">Select a profile...</option>
+                                        <option value="">Select profile...</option>
                                         {profiles.map((p) => {
-                                            const esoteric = getEsotericData(p.numbers.lifePath.value);
                                             return (
                                                 <option key={p.id} value={p.id} disabled={p.id === profile2Id}>
-                                                    {p.firstName} {p.lastName} (Life Path {p.numbers.lifePath.value})
+                                                    {p.firstName} {p.lastName} (LP {p.numbers.lifePath.value})
                                                 </option>
                                             );
                                         })}
@@ -116,12 +115,12 @@ const CompatibilityChecker = () => {
                                         <motion.div
                                             initial={{ opacity: 0, y: 10 }}
                                             animate={{ opacity: 1, y: 0 }}
-                                            className="mt-3 p-4 bg-gray-50 rounded-lg"
+                                            className="mt-4 p-6 bg-bg-elevated rounded-2xl border border-border-subtle"
                                         >
-                                            <div className="text-3xl font-bold text-lifepath-7 text-center">
+                                            <div className="text-4xl font-display font-bold text-accent-primary text-center">
                                                 {profile1.numbers.lifePath.value}
                                             </div>
-                                            <div className="text-center text-sm text-gray-600 mt-1">
+                                            <div className="text-center text-xs font-mono uppercase tracking-widest text-text-muted mt-2">
                                                 {getEsotericData(profile1.numbers.lifePath.value).keywords.join(' • ')}
                                             </div>
                                         </motion.div>
@@ -130,18 +129,18 @@ const CompatibilityChecker = () => {
 
                                 {/* Profile 2 */}
                                 <div>
-                                    <label className="block text-sm font-medium mb-2">
-                                        Person 2
+                                    <label className="block text-sm font-bold uppercase tracking-wider text-text-muted mb-3">
+                                        Partner B
                                     </label>
                                     <select
                                         value={profile2Id}
                                         onChange={(e) => setProfile2Id(e.target.value)}
-                                        className="input-field"
+                                        className="input-field bg-bg-elevated"
                                     >
-                                        <option value="">Select a profile...</option>
+                                        <option value="">Select profile...</option>
                                         {profiles.map((p) => (
                                             <option key={p.id} value={p.id} disabled={p.id === profile1Id}>
-                                                {p.firstName} {p.lastName} (Life Path {p.numbers.lifePath.value})
+                                                {p.firstName} {p.lastName} (LP {p.numbers.lifePath.value})
                                             </option>
                                         ))}
                                     </select>
@@ -149,12 +148,12 @@ const CompatibilityChecker = () => {
                                         <motion.div
                                             initial={{ opacity: 0, y: 10 }}
                                             animate={{ opacity: 1, y: 0 }}
-                                            className="mt-3 p-4 bg-gray-50 rounded-lg"
+                                            className="mt-4 p-6 bg-bg-elevated rounded-2xl border border-border-subtle"
                                         >
-                                            <div className="text-3xl font-bold text-lifepath-7 text-center">
+                                            <div className="text-4xl font-display font-bold text-accent-teal text-center">
                                                 {profile2.numbers.lifePath.value}
                                             </div>
-                                            <div className="text-center text-sm text-gray-600 mt-1">
+                                            <div className="text-center text-xs font-mono uppercase tracking-widest text-text-muted mt-2">
                                                 {getEsotericData(profile2.numbers.lifePath.value).keywords.join(' • ')}
                                             </div>
                                         </motion.div>
@@ -163,19 +162,20 @@ const CompatibilityChecker = () => {
                             </div>
 
                             {/* Compare Button */}
-                            <div className="text-center pt-4">
+                            <div className="text-center pt-4 border-t border-border-subtle">
                                 <Button
                                     onClick={handleCompare}
                                     disabled={!canCompare}
                                     variant="primary"
                                     size="lg"
                                     icon={Heart}
+                                    className="w-full md:w-auto min-w-[200px]"
                                 >
-                                    Check Compatibility
+                                    Analyze Compatibility
                                 </Button>
                                 {profile1Id === profile2Id && profile1Id !== '' && (
-                                    <p className="text-sm text-red-500 mt-2">
-                                        Please select two different profiles
+                                    <p className="text-sm text-red-400 mt-2 bg-red-400/10 py-1 px-3 rounded inline-block">
+                                        Select two different profiles
                                     </p>
                                 )}
                             </div>
@@ -191,9 +191,9 @@ const CompatibilityChecker = () => {
                                 profile1={profile1}
                                 profile2={profile2}
                             />
-                            <div className="text-center pt-6">
+                            <div className="text-center pt-8">
                                 <Button onClick={handleReset} variant="secondary">
-                                    Compare Different Profiles
+                                    Start New Comparison
                                 </Button>
                             </div>
                         </motion.div>
