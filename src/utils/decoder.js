@@ -50,6 +50,30 @@ const TEXT_SPEAK = {
     'GG': 'Good Game',
 };
 
+// Curated dictionary for Anagram/Word finding
+const POWER_WORDS = [
+    'LOVE', 'LIFE', 'CODE', 'DATA', 'TECH', 'HERO', 'SOUL', 'MIND', 'STAR', 'MOON',
+    'SUN', 'FIRE', 'WIND', 'GOLD', 'BLUE', 'ROSE', 'TIME', 'FATE', 'PATH', 'WILL',
+    'GOOD', 'EVIL', 'HOLY', 'TRUE', 'PURE', 'FREE', 'WILD', 'DEEP', 'HIGH', 'VAST',
+    'RICH', 'WISE', 'MECH', 'CYBER', 'NEON', 'VOID', 'NULL', 'ROOT', 'TREE', 'LEAF',
+    'SEED', 'CORE', 'FLOW', 'GIFT', 'HOPE', 'WISH', 'DREAM', 'PLAN', 'WORK', 'REST',
+    'PLAY', 'GAME', 'MATH', 'LOGIC', 'ZERO', 'ONE', 'TWO', 'TEN', 'KEY', 'LOCK',
+    'DOOR', 'GATE', 'WAY', 'EGO', 'SELF', 'I', 'AM', 'BE', 'DO', 'GO',
+    'MAGIC', 'WITCH', 'WIZARD', 'SPELL', 'RUNE', 'TAROT', 'MYSTIC', 'AURA', 'SPIRIT',
+    'GHOST', 'ANGEL', 'DEMON', 'LUCIFER', 'GOD', 'SATAN', 'HEAVEN', 'HELL', 'EARTH',
+    'WATER', 'SPACE', 'ETHER', 'METAL', 'WOOD', 'CRYSTAL', 'STONE', 'GEM', 'RUBY',
+    'OPAL', 'PEARL', 'JADE', 'ONYX', 'AMBER', 'TOPAZ', 'QUARTZ', 'AGATE',
+    'VIOLET', 'PURPLE', 'INDIGO', 'GREEN', 'YELLOW', 'ORANGE', 'RED', 'WHITE', 'BLACK',
+    'GREY', 'SILVER', 'BRONZE', 'COPPER', 'IRON', 'STEEL', 'GLASS', 'LIGHT', 'DARK',
+    'SHADOW', 'NIGHT', 'DAY', 'DAWN', 'DUSK', 'ALPHA', 'OMEGA', 'BEGIN', 'END',
+    'PEACE', 'WAR', 'JOY', 'PAIN', 'HATE', 'FEAR', 'BRAVE', 'CALM', 'LUCK', 'DOOM',
+    'DEATH', 'BIRTH', 'YOUTH', 'AGE', 'OLD', 'NEW', 'NOW', 'HERE', 'THERE',
+    'HUMAN', 'ROBOT', 'ALIEN', 'BEAST', 'BIRD', 'FISH', 'LION', 'WOLF', 'BEAR',
+    'SNAKE', 'DRAGON', 'EAGLE', 'HAWK', 'OWL', 'CROW', 'CAT', 'DOG', 'BAT',
+    'MASTER', 'TEACHER', 'STUDENT', 'GUIDE', 'LEADER', 'KING', 'QUEEN', 'PRINCE',
+    'LORD', 'LADY', 'KNIGHT', 'MAGE', 'BARD', 'DRUID', 'MONK', 'ROGUE', 'THIEF'
+];
+
 // Math Helpers
 const isPrime = (num) => {
     if (num <= 1) return false;
@@ -80,6 +104,45 @@ while (b < 1000000) { // Limit for practical pattern matching
     FIBONACCI_SET.add(b);
 }
 
+// Anagram Finder Helper
+// Returns words from POWER_WORDS that can be formed using the input letters
+const findAnagrams = (cleanInput) => {
+    if (!cleanInput || cleanInput.length < 2) return [];
+
+    const inputUpper = cleanInput.toUpperCase();
+    const inputCounts = {};
+    for (const char of inputUpper) {
+        inputCounts[char] = (inputCounts[char] || 0) + 1;
+    }
+
+    const found = [];
+
+    for (const word of POWER_WORDS) {
+        // Skip if word is longer than input
+        if (word.length > inputUpper.length) continue;
+
+        // Check if word can be formed
+        const wordCounts = {};
+        let possible = true;
+        for (const char of word) {
+            wordCounts[char] = (wordCounts[char] || 0) + 1;
+        }
+
+        for (const [char, count] of Object.entries(wordCounts)) {
+            if (!inputCounts[char] || inputCounts[char] < count) {
+                possible = false;
+                break;
+            }
+        }
+
+        if (possible) {
+            found.push(word);
+        }
+    }
+
+    return found.sort((a, b) => b.length - a.length).slice(0, 12); // Limit to top 12 longest matches
+};
+
 // Core Analyzer Function
 export const analyzeInput = (input) => {
     if (!input) return null;
@@ -102,19 +165,44 @@ export const analyzeInput = (input) => {
         representations: null,
         frequency: {},
         gematria: 0,
+        breakdown: null,
+        anagrams: []
     };
 
-    // Detect Type
-    const phoneRegex = /^(\+\d{1,2}\s?)?\(?\d{3}\)?[\s.-]?\d{3}[\s.-]?\d{4}$/;
+    // Detect Type & Component Breakdown
+    const phoneRegex = /^(\+?\d{1,2}[\s.-]?)?\(?(\d{3})\)?[\s.-]?(\d{3})[\s.-]?(\d{4})$/;
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     const dateRegex = /^(0[1-9]|1[0-2])\/(0[1-9]|[12]\d|3[01])\/(19|20)\d{2}$/; // Simple MM/DD/YYYY
     const licensePlateRegex = /^[A-Z0-9]{1,7}$/; // Generic US style
 
-    if (emailRegex.test(raw)) analysis.type = 'Email Address';
-    else if (phoneRegex.test(raw)) analysis.type = 'Phone Number';
-    else if (dateRegex.test(raw)) analysis.type = 'Date';
-    else if (analysis.isNumeric) analysis.type = 'Number';
-    else if (analysis.isAlpha) {
+    if (emailRegex.test(raw)) {
+        analysis.type = 'Email Address';
+        const [user, domain] = raw.split('@');
+        analysis.breakdown = [
+            { label: 'User', value: user },
+            { label: 'Domain', value: domain }
+        ];
+    } else if (phoneRegex.test(raw)) {
+        analysis.type = 'Phone Number';
+        const match = raw.match(phoneRegex);
+        if (match) {
+            analysis.breakdown = [];
+            if (match[1]) analysis.breakdown.push({ label: 'Country', value: match[1].replace(/[\s+-]/g, '') });
+            if (match[2]) analysis.breakdown.push({ label: 'Area Code', value: match[2] });
+            if (match[3]) analysis.breakdown.push({ label: 'Prefix', value: match[3] });
+            if (match[4]) analysis.breakdown.push({ label: 'Line', value: match[4] });
+        }
+    } else if (dateRegex.test(raw)) {
+        analysis.type = 'Date';
+        const [m, d, y] = raw.split('/');
+        analysis.breakdown = [
+            { label: 'Month', value: m },
+            { label: 'Day', value: d },
+            { label: 'Year', value: y }
+        ];
+    } else if (analysis.isNumeric) {
+        analysis.type = 'Number';
+    } else if (analysis.isAlpha) {
         if (clean.length === 1) analysis.type = 'Letter';
         else analysis.type = 'Word/Name';
     } else if (licensePlateRegex.test(cleanUpper) && clean.length > 3 && clean.length < 9) {
@@ -128,6 +216,9 @@ export const analyzeInput = (input) => {
     // Leet & Slang
     for (const [key, meaning] of Object.entries(LEET_SPEAK)) {
         if (raw.includes(key)) analysis.patterns.push({ type: 'Leet/Slang', match: key, meaning });
+        // Also check if text looks like leet for 'E' (3), 'A' (4), 'T' (7), 'S' (5), 'O' (0), 'I' (1), 'B' (8)
+        // Simple heuristic: if alphanumeric containing numbers, try to "unleet"
+        // (Not implemented fully to avoid noise, but specific patterns are caught)
     }
 
     // Numeronyms
@@ -169,17 +260,24 @@ export const analyzeInput = (input) => {
 
     // 3. Mathematical Properties (if numeric or convertible)
     let numberValue = null;
-    if (analysis.isNumeric) {
+    if (analysis.isNumeric && clean.length < 16) {
         numberValue = parseInt(clean);
     }
 
-    if (numberValue !== null && !isNaN(numberValue) && clean.length < 16) {
+    if (numberValue !== null && !isNaN(numberValue)) {
+        const numStr = numberValue.toString();
+        const digitSum = numStr.split('').reduce((a, b) => a + parseInt(b), 0);
+        const digitProduct = numStr.length < 10 ? numStr.split('').reduce((a, b) => a * parseInt(b), 1) : null;
+
         analysis.math = {
             value: numberValue,
             isPrime: isPrime(numberValue),
             isPerfectSquare: isPerfectSquare(numberValue),
             isTriangular: isTriangular(numberValue),
             isFibonacci: FIBONACCI_SET.has(numberValue),
+            sumOfDigits: digitSum,
+            productOfDigits: digitProduct,
+            parity: numberValue % 2 === 0 ? 'Even' : 'Odd'
         };
 
         analysis.representations = {
@@ -195,7 +293,7 @@ export const analyzeInput = (input) => {
         freq[char] = (freq[char] || 0) + 1;
     }
 
-    // Find missing digits (if numeric context)
+    // Find missing digits (if numeric context) or letters
     if (analysis.isNumeric) {
         const missing = [];
         for (let i = 0; i <= 9; i++) {
@@ -243,6 +341,12 @@ export const analyzeInput = (input) => {
             reduction: reduction,
             isMaster: [11, 22, 33].includes(reduction)
         };
+    }
+
+    // 6. Anagram/Hidden Word Finder
+    // If text context, find words that can be made from input
+    if (analysis.isAlpha || analysis.isAlphanumeric) {
+        analysis.anagrams = findAnagrams(clean);
     }
 
     return analysis;
