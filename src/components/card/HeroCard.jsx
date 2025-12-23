@@ -1,7 +1,8 @@
 import { useRef, useState } from 'react';
 import { motion } from 'framer-motion';
-import { Download, FileText, Image } from 'lucide-react';
+import { Download, FileText, Image, Info } from 'lucide-react';
 import { getEsotericData } from '../../data/esotericData';
+import { getNumberMeaning } from '../../data/numberMeanings';
 import { exportToPNG, exportToPDF } from '../../utils/export';
 
 export default function HeroCard({ profile }) {
@@ -29,25 +30,23 @@ export default function HeroCard({ profile }) {
         { label: 'Challenge', value: profile.numbers.challengeNumber, isMaster: false },
     ];
 
-    // Map generated icons
-    // Note: We need to handle the missing 'Element' icon gracefully if it failed generation.
-    // Assuming filenames based on generation.
-    const getIconPath = (type) => {
-        // Simple mapping based on the files we moved to public/icons
-        // We need to resolve the dynamic filenames. 
-        // For now, these are placeholders - the agent logic moved files like "tarot_card_icon_123.png".
-        // In a real app, I'd rename them to 'tarot.png'. 
-        // Since I can't rename easily without knowing the timestamp, I will rely on the agent having renamed them or just listing the dir to find the exact names.
-        // STOP: I need to know the exact filenames. I will assume I will rename them in the next step or use a helper.
-        // For this specific replacement, I will use a generic path and expect to fix it or use the `list_dir` output.
-        // actually, let's just use the `list_dir` output I requested in parallel.
-        return `/icons/${type}.png`;
+    // Helper to get meaning key (safely handling masters and large numbers)
+    const getMeaningKey = (val, isMaster) => {
+        if (isMaster || [11, 22, 33].includes(val)) return val;
+        if (val === 0) return 0; // Handle challenge 0
+        return val > 9 ? (val % 9 || 9) : val;
+    };
+
+    // Zero meaning fallback (since it's not in the main dictionary usually)
+    const zeroMeaning = {
+        keywords: ['Potential', 'Choice', 'All-encompassing'],
+        description: 'The number of unlimited potential and choice. It amplifies the qualities of other numbers present.',
     };
 
     const esotericItems = [
         { label: 'Tarot', value: esotericData.tarot, iconType: 'tarot' },
         { label: 'Planet', value: esotericData.planet, iconType: 'planet' },
-        { label: 'Element', value: esotericData.element, iconType: 'element' }, // Fallback if missing
+        { label: 'Element', value: esotericData.element, iconType: 'element' },
         { label: 'Gemstone', value: esotericData.gemstone, iconType: 'gemstone' },
         { label: 'Chakra', value: esotericData.chakra, iconType: 'chakra' },
     ];
@@ -165,7 +164,7 @@ export default function HeroCard({ profile }) {
                 {/* Grid Layout for Details */}
                 <div className="grid grid-cols-1 md:grid-cols-12 gap-px bg-border-subtle/30 border-t border-border-subtle">
 
-                    {/* Left Column: Core Numbers */}
+                    {/* Left Column: Core Matrix */}
                     <div className="md:col-span-7 bg-bg-card p-8">
                         <div className="flex items-center justify-between mb-6">
                             <h3 className="text-sm font-bold uppercase tracking-widest text-text-muted">Core Matrix</h3>
@@ -174,19 +173,38 @@ export default function HeroCard({ profile }) {
                             </div>
                         </div>
 
-                        <div className="grid grid-cols-2 gap-4">
-                            {coreNumbers.map((item, idx) => (
-                                <div
-                                    key={idx}
-                                    className="p-4 rounded-2xl bg-bg-secondary border border-border-default hover:border-accent-teal/30 transition-colors group"
-                                >
-                                    <div className="text-xs text-text-muted mb-1 group-hover:text-accent-teal transition-colors">{item.label}</div>
-                                    <div className="text-3xl font-display font-bold text-text-primary flex items-baseline gap-2">
-                                        {item.value}
-                                        {item.isMaster && <span className="text-xs text-accent-gold transform -translate-y-2">⚡</span>}
+                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                            {coreNumbers.map((item, idx) => {
+                                const key = getMeaningKey(item.value, item.isMaster);
+                                const meaning = key === 0 ? zeroMeaning : getNumberMeaning(key);
+
+                                return (
+                                    <div
+                                        key={idx}
+                                        className="p-4 rounded-2xl bg-bg-secondary border border-border-default hover:border-accent-teal/30 transition-colors group flex flex-col h-full"
+                                    >
+                                        <div className="flex justify-between items-start mb-2">
+                                            <div className="text-xs text-text-muted group-hover:text-accent-teal transition-colors uppercase tracking-wider">
+                                                {item.label}
+                                            </div>
+                                            <div className="text-2xl font-display font-bold text-text-primary flex items-baseline gap-1">
+                                                {item.value}
+                                                {item.isMaster && <span className="text-[10px] text-accent-gold">⚡</span>}
+                                            </div>
+                                        </div>
+
+                                        {/* Meaning Content */}
+                                        <div className="mt-auto pt-2 border-t border-white/5">
+                                            <div className="text-xs font-bold text-accent-primary mb-1">
+                                                {meaning.keywords[0]}
+                                            </div>
+                                            <div className="text-[11px] text-text-muted leading-relaxed line-clamp-3">
+                                                {meaning.description}
+                                            </div>
+                                        </div>
                                     </div>
-                                </div>
-                            ))}
+                                );
+                            })}
                         </div>
                     </div>
 
@@ -199,15 +217,13 @@ export default function HeroCard({ profile }) {
                                 <div key={idx} className="flex items-center gap-4">
                                     {/* Icon Container with Generated Image */}
                                     <div className="w-12 h-12 rounded-xl bg-bg-secondary border border-border-default flex items-center justify-center overflow-hidden relative group shrink-0">
-                                        {/* Using CSS fallback if image fails or class lookup */}
                                         <img
-                                            src={`/icons/${item.iconType}_icon.png`} // Expecting renamed files or matching prefix
+                                            src={`/icons/${item.iconType}.png`}
                                             alt={item.label}
                                             className="w-full h-full object-cover opacity-80 group-hover:opacity-100 group-hover:scale-110 transition-all duration-500"
                                             onError={(e) => {
                                                 e.target.style.display = 'none';
                                                 e.target.parentElement.classList.add('fallback-icon');
-                                                // Add a fallback text or emoji if image missing
                                                 e.target.parentElement.innerHTML = '<span class="text-xl">✨</span>';
                                             }}
                                         />
