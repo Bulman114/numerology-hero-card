@@ -1,9 +1,10 @@
 import { BrowserRouter, Routes, Route, useNavigate, Link } from 'react-router-dom';
-import { Library, PlusCircle, Heart, Book, Calculator } from 'lucide-react';
+import { Library, PlusCircle, Heart, Book, Calculator, Scale } from 'lucide-react';
 import useProfileStore from './store/useProfileStore';
 import InputForm from './components/input/InputForm';
 import HeroCard from './components/card/HeroCard';
 import ProfileLibrary from './components/profiles/ProfileLibrary';
+import ProfileComparison from './components/profiles/ProfileComparison';
 import CalculationTree from './components/calculations/CalculationTree';
 import CompatibilityChecker from './components/compatibility/CompatibilityChecker';
 import ReferenceLibrary from './components/reference/ReferenceLibrary';
@@ -38,6 +39,13 @@ function Navigation() {
             className="flex items-center gap-1 hover:opacity-80 transition-opacity"
           >
             <Heart size={16} />
+            Compatibility
+          </Link>
+          <Link
+            to="/comparison"
+            className="flex items-center gap-1 hover:opacity-80 transition-opacity"
+          >
+            <Scale size={16} />
             Compare
           </Link>
           <Link
@@ -113,6 +121,7 @@ function App() {
           <Route path="/profiles" element={<ProfileLibrary />} />
           <Route path="/breakdown/:profileId" element={<CalculationTree />} />
           <Route path="/compatibility" element={<CompatibilityChecker />} />
+          <Route path="/comparison" element={<ProfileComparison />} />
           <Route path="/reference" element={<ReferenceLibrary />} />
         </Routes>
       </div>

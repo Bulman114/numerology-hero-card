@@ -199,7 +199,8 @@
 
   /* Master Number Badge */
   .master-badge {
-    @apply inline-flex items-center px-4 py-1 rounded-full text-xs font-bold tracking-widest uppercase bg-accent-gold/10 text-accent-gold border border-accent-gold/20 shadow-[0_0_15px_rgba(255, 209, 102, 0.2)];
+    @apply inline-flex items-center px-4 py-1 rounded-full text-xs font-bold tracking-widest uppercase bg-accent-gold/10 text-accent-gold border border-accent-gold/20;
+    box-shadow: 0 0 15px rgba(255, 209, 102, 0.2);
   }
 
   /* Navigation Link */
