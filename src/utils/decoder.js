@@ -104,9 +104,36 @@ while (b < 1000000) { // Limit for practical pattern matching
     FIBONACCI_SET.add(b);
 }
 
-// Anagram Finder Helper
-// Returns words from POWER_WORDS that can be formed using the input letters
+// Sacred & Scientific Constants
+const SACRED_NUMBERS = {
+    '108': 'Vedic Whole / Distance to Sun/Moon',
+    '369': 'Tesla Code / Universal Key',
+    '432': 'Verdi Pitch / Natural Tuning',
+    '528': 'Solfeggio Freq (Miracle)',
+    '137': 'Fine Structure Constant (Alpha)',
+    '273': 'Absolute Zero / Moon Siderial',
+    '618': 'Golden Ratio (approx)',
+    '1618': 'Golden Ratio (Phi)'
+};
+
+const AURA_MAP = {
+    1: { color: 'Red', trait: 'Leadership & Will', hex: '#FF4136' },
+    2: { color: 'Orange', trait: 'Harmony & Balance', hex: '#FF851B' },
+    3: { color: 'Yellow', trait: 'Creativity & Joy', hex: '#FFDC00' },
+    4: { color: 'Green', trait: 'Stability & Order', hex: '#2ECC40' },
+    5: { color: 'Blue', trait: 'Change & Freedom', hex: '#0074D9' },
+    6: { color: 'Indigo', trait: 'Nurturing & Care', hex: '#001f3f' },
+    7: { color: 'Violet', trait: 'Wisdom & Spirit', hex: '#B10DC9' },
+    8: { color: 'Rose', trait: 'Power & Abundance', hex: '#F012BE' },
+    9: { color: 'Gold', trait: 'Completion & Global', hex: '#FFD700' },
+    11: { color: 'Silver', trait: 'Illumination', hex: '#DDDDDD' },
+    22: { color: 'Coral', trait: 'Master Builder', hex: '#FF6F61' },
+    33: { color: 'Platinum', trait: 'Universal Teacher', hex: '#E5E4E2' }
+};
+
+// ... existing code ...
 const findAnagrams = (cleanInput) => {
+    // ... (existing anagram implementation)
     if (!cleanInput || cleanInput.length < 2) return [];
 
     const inputUpper = cleanInput.toUpperCase();
@@ -269,10 +296,44 @@ export const analyzeInput = (input) => {
         });
     }
 
-    // 3. Mathematical Properties (if numeric or convertible)
+    // 3. Mathematical Properties & Gematria
+
+    // A. Gematria / Value Calculation
+    if (clean.length > 0) {
+        let sum = 0;
+        for (const char of cleanUpper) {
+            if (/[0-9]/.test(char)) {
+                sum += parseInt(char);
+            } else if (/[A-Z]/.test(char)) {
+                // Pythagorean: A=1, B=2 ... I=9, J=1 ...
+                const val = (char.charCodeAt(0) - 64) % 9;
+                sum += (val === 0 ? 9 : val);
+            }
+        }
+
+        let reduction = sum;
+        while (reduction > 9 && reduction !== 11 && reduction !== 22 && reduction !== 33) {
+            reduction = Array.from(String(reduction), Number).reduce((a, b) => a + b, 0);
+        }
+
+        analysis.gematria = {
+            sum: sum,
+            reduction: reduction,
+            isMaster: [11, 22, 33].includes(reduction)
+        };
+    }
+
+    // B. Mathematical Analysis
+    // We analyze either the direct numeric input OR the Gematria sum
     let numberValue = null;
+    let numberSource = null;
+
     if (analysis.isNumeric && clean.length < 16) {
         numberValue = parseInt(clean);
+        numberSource = 'Direct Input';
+    } else if (analysis.gematria && analysis.gematria.sum > 0) {
+        numberValue = analysis.gematria.sum;
+        numberSource = 'Gematria Sum';
     }
 
     if (numberValue !== null && !isNaN(numberValue)) {
@@ -281,6 +342,7 @@ export const analyzeInput = (input) => {
         const digitProduct = numStr.length < 10 ? numStr.split('').reduce((a, b) => a * parseInt(b), 1) : null;
 
         analysis.math = {
+            source: numberSource,
             value: numberValue,
             isPrime: isPrime(numberValue),
             isPerfectSquare: isPerfectSquare(numberValue),
@@ -328,36 +390,39 @@ export const analyzeInput = (input) => {
     }
     analysis.frequency.mostCommon = { chars: mostCommon, count: maxCount };
 
-    // 5. Basic Numerology Sum (Cross-sum)
-    // Reduce entire alphanum string to single digit/master
-    if (clean.length > 0) {
-        let sum = 0;
-        for (const char of cleanUpper) {
-            if (/[0-9]/.test(char)) {
-                sum += parseInt(char);
-            } else if (/[A-Z]/.test(char)) {
-                // Pythagorean: A=1, B=2 ... I=9, J=1 ...
-                const val = (char.charCodeAt(0) - 64) % 9;
-                sum += (val === 0 ? 9 : val);
-            }
-        }
-
-        let reduction = sum;
-        while (reduction > 9 && reduction !== 11 && reduction !== 22 && reduction !== 33) {
-            reduction = Array.from(String(reduction), Number).reduce((a, b) => a + b, 0);
-        }
-
-        analysis.gematria = {
-            sum: sum,
-            reduction: reduction,
-            isMaster: [11, 22, 33].includes(reduction)
-        };
-    }
-
     // 6. Anagram/Hidden Word Finder
     // If text context, find words that can be made from input
     if (analysis.isAlpha || analysis.isAlphanumeric) {
         analysis.anagrams = findAnagrams(clean);
+    }
+
+    // Sacred Number Check
+    for (const [key, meaning] of Object.entries(SACRED_NUMBERS)) {
+        if (raw.includes(key)) {
+            analysis.patterns.push({ type: 'Sacred Number', match: key, meaning });
+        } else if (analysis.gematria?.sum === parseInt(key)) {
+            analysis.patterns.push({ type: 'Sacred Resonance', match: key, meaning: `${meaning} (Sum)` });
+        }
+    }
+
+    // Dominant Aura Analysis
+    if (analysis.gematria && analysis.gematria.reduction) {
+        const root = analysis.gematria.reduction;
+        if (AURA_MAP[root]) {
+            analysis.aura = AURA_MAP[root];
+        }
+    }
+
+    // Tech / Data View
+    if (clean.length > 0) {
+        analysis.tech = {
+            messageLength: raw.length,
+            ascii: clean.split('').slice(0, 10).map(c => c.charCodeAt(0)).join(' '),
+            isHexColor: /^#[0-9A-F]{6}$/i.test(raw) || /^[0-9A-F]{6}$/i.test(raw)
+        };
+        if (analysis.tech.isHexColor) {
+            analysis.tech.hexPreview = raw.startsWith('#') ? raw : `#${raw}`;
+        }
     }
 
     return analysis;

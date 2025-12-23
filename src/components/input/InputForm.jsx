@@ -103,9 +103,27 @@ export default function InputForm({ onSubmit }) {
             animate={{ opacity: 1, y: 0 }}
             className="max-w-2xl mx-auto p-6"
         >
-            <h1 className="text-4xl font-display text-center mb-8 text-text-primary">
-                🔢 Numerology Hero Card
-            </h1>
+            <div className="flex flex-col items-center justify-center mb-10">
+                <motion.div
+                    initial={{ scale: 0.8, opacity: 0 }}
+                    animate={{ scale: 1, opacity: 1 }}
+                    transition={{ duration: 0.8, ease: "easeOut" }}
+                    className="relative w-32 h-32 mb-6"
+                >
+                    <div className="absolute inset-0 bg-accent-primary/40 blur-2xl rounded-full" />
+                    <img
+                        src="/logo.png"
+                        alt="Logo"
+                        className="w-full h-full object-contain relative z-10 mix-blend-screen opacity-90"
+                    />
+                </motion.div>
+                <h1 className="text-4xl md:text-5xl font-display font-bold text-center tracking-tight text-transparent bg-clip-text bg-gradient-to-r from-text-primary to-accent-teal drop-shadow-sm pb-2">
+                    Numerology Hero Card
+                </h1>
+                <p className="text-text-muted mt-3 text-lg font-light tracking-wide">
+                    Reveal the hidden mathematics of your soul
+                </p>
+            </div>
 
             <form
                 onSubmit={handleSubmit}

@@ -17,8 +17,14 @@ function Navigation() {
   return (
     <nav className="bg-bg-secondary/80 backdrop-blur-xl border-b border-border-subtle text-text-primary px-6 py-4 sticky top-0 z-50 no-print">
       <div className="max-w-4xl mx-auto flex justify-between items-center">
-        <Link to="/" className="text-xl font-display flex items-center gap-2">
-          🔢 Numerology Hero Card
+        <Link to="/" className="text-xl font-display flex items-center gap-3 group">
+          <div className="w-8 h-8 relative">
+            <div className="absolute inset-0 bg-accent-primary/20 blur-md rounded-full group-hover:bg-accent-primary/40 transition-all duration-500" />
+            <img src="/logo.png" alt="Numerology Hero Card Logo" className="w-full h-full object-contain relative z-10 mix-blend-screen" />
+          </div>
+          <span className="bg-clip-text text-transparent bg-gradient-to-r from-text-primary to-text-secondary group-hover:to-accent-teal transition-all duration-500">
+            Numerology Hero Card
+          </span>
         </Link>
         <div className="flex gap-4 text-sm">
           <Link

@@ -95,21 +95,20 @@ export default function HeroCard({ profile }) {
 
             {/* Card Container - ref for export */}
             <div ref={cardRef} className="hero-card text-text-primary">
-                {/* Visual Header Background */}
-                <div className="absolute top-0 left-0 w-full h-64 bg-gradient-to-b from-accent-primary/20 to-transparent pointer-events-none" />
+
 
                 {/* Header Content */}
-                <div className="relative z-10 px-10 py-8 flex flex-col md:flex-row justify-between items-start md:items-center gap-6">
+                <div className="relative z-10 px-8 py-6 flex flex-col md:flex-row justify-between items-start md:items-center gap-4 border-b border-white/5 bg-black/20">
                     <div>
-                        <h2 className="text-4xl md:text-5xl font-display font-extrabold uppercase tracking-tight text-transparent bg-clip-text bg-gradient-to-r from-white to-white/70">
+                        <h2 className="text-3xl md:text-4xl font-display font-bold uppercase tracking-tight text-text-primary">
                             {fullName}
                         </h2>
-                        <div className="flex items-center gap-4 mt-2 text-sm text-text-secondary font-mono">
-                            <span className="px-2 py-1 rounded bg-white/5 border border-white/10">
+                        <div className="flex items-center gap-4 mt-1 text-xs text-text-secondary font-mono">
+                            <span className="opacity-80">
                                 {formattedDate}
                             </span>
                             {profile.nickname && (
-                                <span className="italic opacity-70">
+                                <span className="italic opacity-60">
                                     "{profile.nickname}"
                                 </span>
                             )}
@@ -117,138 +116,123 @@ export default function HeroCard({ profile }) {
                     </div>
 
                     {/* Method Badge */}
-                    <div className="px-3 py-1 rounded-full bg-accent-teal/10 border border-accent-teal/20 text-accent-teal text-xs font-bold tracking-widest uppercase">
+                    <div className="px-3 py-1 rounded bg-accent-teal/10 border border-accent-teal/20 text-accent-teal text-[10px] font-bold tracking-widest uppercase">
                         {profile.calculationMethod}
                     </div>
                 </div>
 
-                {/* Life Path Section - Hero */}
-                <div className="relative z-10 px-10 py-12 flex flex-col items-center justify-center text-center">
+                {/* Life Path Section - Compact Hero */}
+                <div className="relative z-10 px-12 md:px-24 py-8 flex items-center justify-between gap-8 bg-gradient-to-b from-accent-primary/10 to-transparent">
+                    <div className="flex-1">
+                        <div className="text-sm font-bold text-accent-primary uppercase tracking-widest mb-2">Life Path Number</div>
+                        <div className="text-text-secondary text-sm leading-relaxed max-w-lg">
+                            {esotericData.keywords.join(' • ')}
+                        </div>
+                    </div>
+
                     <motion.div
                         initial={{ scale: 0.8, opacity: 0 }}
                         animate={{ scale: 1, opacity: 1 }}
                         transition={{ type: 'spring', stiffness: 100 }}
-                        className="relative"
+                        className="relative flex-shrink-0"
                     >
                         {/* Glow Effect behind number */}
                         <div
-                            className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-64 h-64 rounded-full blur-[80px]"
-                            style={{ backgroundColor: esotericData.color, opacity: 0.3 }}
+                            className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-32 h-32 rounded-full blur-[40px]"
+                            style={{ backgroundColor: esotericData.color, opacity: 0.4 }}
                         />
 
-                        <div className="number-display relative z-10">
+                        <div className="text-8xl font-display font-bold text-white relative z-10 bg-clip-text text-transparent bg-gradient-to-b from-white to-white/80 drop-shadow-2xl">
                             {profile.numbers.lifePath.value}
                         </div>
 
                         {profile.numbers.lifePath.isMaster && (
-                            <div className="absolute -top-6 right-0 rotate-12">
-                                <span className="master-badge shadow-lg backdrop-blur-md bg-black/50">
-                                    Master Number
+                            <div className="absolute -top-3 -right-6 rotate-12">
+                                <span className="px-2 py-0.5 rounded text-[9px] font-bold uppercase tracking-wider bg-accent-gold text-black shadow-lg">
+                                    Master
                                 </span>
                             </div>
                         )}
                     </motion.div>
+                </div>
 
-                    <div className="mt-8 flex flex-wrap justify-center gap-3">
-                        {esotericData.keywords.map((keyword, idx) => (
-                            <span
-                                key={idx}
-                                className="px-4 py-2 rounded-xl bg-white/5 border border-white/10 text-sm font-medium text-text-primary backdrop-blur-sm"
-                            >
-                                {keyword}
-                            </span>
+                {/* Esoteric Strip - Horizontal Layout */}
+                <div className="relative z-10 border-t border-white/5 bg-black/10 backdrop-blur-sm px-8 py-6">
+                    <div className="flex flex-wrap items-center justify-center gap-x-8 gap-y-4">
+                        {esotericItems.map((item, idx) => (
+                            <div key={idx} className="flex items-center gap-3">
+                                <div className="w-8 h-8 rounded-lg bg-bg-secondary border border-border-default flex items-center justify-center overflow-hidden relative shrink-0 text-text-muted">
+                                    <img
+                                        src={`/icons/${item.iconType}.png`}
+                                        alt={item.label}
+                                        className="w-full h-full object-cover opacity-80"
+                                        onError={(e) => {
+                                            e.target.style.display = 'none';
+                                            e.target.parentElement.innerHTML = '<span class="text-xs">✨</span>';
+                                        }}
+                                    />
+                                </div>
+                                <div>
+                                    <div className="text-[9px] text-text-muted uppercase tracking-wide">{item.label}</div>
+                                    <div className="font-medium text-text-primary text-xs">{item.value}</div>
+                                </div>
+                            </div>
                         ))}
+
+                        {/* Periodic Aura Item */}
+                        <div className="flex items-center gap-3 pl-4 md:border-l border-white/10">
+                            <div
+                                className="w-8 h-8 rounded-lg border border-white/10 shadow-lg relative overflow-hidden"
+                                style={{ backgroundColor: esotericData.color }}
+                            >
+                                <div className="absolute inset-0 bg-gradient-to-tr from-black/20 to-transparent" />
+                            </div>
+                            <div>
+                                <div className="text-[9px] text-text-muted uppercase tracking-wide">Aura</div>
+                                <div className="font-medium font-mono text-text-primary text-xs">{esotericData.color}</div>
+                            </div>
+                        </div>
                     </div>
                 </div>
 
-                {/* Grid Layout for Details */}
-                <div className="grid grid-cols-1 md:grid-cols-12 gap-px bg-border-subtle/30 border-t border-border-subtle">
-
-                    {/* Left Column: Core Matrix */}
-                    <div className="md:col-span-7 bg-bg-card p-8">
-                        <div className="flex items-center justify-between mb-6">
-                            <h3 className="text-sm font-bold uppercase tracking-widest text-text-muted">Core Matrix</h3>
-                            <div className="text-xs font-mono text-accent-primary">
-                                EXP: {profile.numbers.expression.value}
-                            </div>
-                        </div>
-
-                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                            {coreNumbers.map((item, idx) => {
-                                const key = getMeaningKey(item.value, item.isMaster);
-                                const meaning = key === 0 ? zeroMeaning : getNumberMeaning(key);
-
-                                return (
-                                    <div
-                                        key={idx}
-                                        className="p-4 rounded-2xl bg-bg-secondary border border-border-default hover:border-accent-teal/30 transition-colors group flex flex-col h-full"
-                                    >
-                                        <div className="flex justify-between items-start mb-2">
-                                            <div className="text-xs text-text-muted group-hover:text-accent-teal transition-colors uppercase tracking-wider">
-                                                {item.label}
-                                            </div>
-                                            <div className="text-2xl font-display font-bold text-text-primary flex items-baseline gap-1">
-                                                {item.value}
-                                                {item.isMaster && <span className="text-[10px] text-accent-gold">⚡</span>}
-                                            </div>
-                                        </div>
-
-                                        {/* Meaning Content */}
-                                        <div className="mt-auto pt-2 border-t border-white/5">
-                                            <div className="text-xs font-bold text-accent-primary mb-1">
-                                                {meaning.keywords[0]}
-                                            </div>
-                                            <div className="text-[11px] text-text-muted leading-relaxed line-clamp-3">
-                                                {meaning.description}
-                                            </div>
-                                        </div>
-                                    </div>
-                                );
-                            })}
-                        </div>
+                {/* Core Matrix - Full Width */}
+                <div className="bg-bg-card p-6 md:p-8 border-t border-border-subtle">
+                    <div className="flex items-center justify-between mb-6">
+                        <h3 className="text-sm font-bold uppercase tracking-widest text-text-muted">Core Matrix</h3>
                     </div>
 
-                    {/* Right Column: Esoteric Data */}
-                    <div className="md:col-span-5 bg-bg-elevated/30 p-8 backdrop-blur-sm">
-                        <h3 className="text-sm font-bold uppercase tracking-widest text-text-muted mb-6">Esoteric Profile</h3>
+                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                        {coreNumbers.map((item, idx) => {
+                            const key = getMeaningKey(item.value, item.isMaster);
+                            const meaning = key === 0 ? zeroMeaning : getNumberMeaning(key);
 
-                        <div className="space-y-4">
-                            {esotericItems.map((item, idx) => (
-                                <div key={idx} className="flex items-center gap-4">
-                                    {/* Icon Container with Generated Image */}
-                                    <div className="w-12 h-12 rounded-xl bg-bg-secondary border border-border-default flex items-center justify-center overflow-hidden relative group shrink-0">
-                                        <img
-                                            src={`/icons/${item.iconType}.png`}
-                                            alt={item.label}
-                                            className="w-full h-full object-cover opacity-80 group-hover:opacity-100 group-hover:scale-110 transition-all duration-500"
-                                            onError={(e) => {
-                                                e.target.style.display = 'none';
-                                                e.target.parentElement.classList.add('fallback-icon');
-                                                e.target.parentElement.innerHTML = '<span class="text-xl">✨</span>';
-                                            }}
-                                        />
-                                    </div>
-
-                                    <div>
-                                        <div className="text-xs text-text-muted">{item.label}</div>
-                                        <div className="font-medium text-text-primary text-sm leading-tight">{item.value}</div>
-                                    </div>
-                                </div>
-                            ))}
-
-                            <div className="flex items-center gap-4 pt-4 mt-4 border-t border-white/5">
+                            return (
                                 <div
-                                    className="w-12 h-12 rounded-xl border border-white/10 shadow-lg relative overflow-hidden"
-                                    style={{ backgroundColor: esotericData.color }}
+                                    key={idx}
+                                    className="p-4 rounded-xl bg-bg-secondary border border-border-default hover:border-accent-teal/30 transition-colors group flex flex-col h-full"
                                 >
-                                    <div className="absolute inset-0 bg-gradient-to-tr from-black/20 to-transparent" />
+                                    <div className="flex justify-between items-start mb-3">
+                                        <div className="text-[10px] font-bold text-text-muted group-hover:text-accent-teal transition-colors uppercase tracking-wider">
+                                            {item.label}
+                                        </div>
+                                        <div className="text-xl font-display font-bold text-text-primary flex items-baseline gap-1">
+                                            {item.value}
+                                            {item.isMaster && <span className="text-[10px] text-accent-gold">⚡</span>}
+                                        </div>
+                                    </div>
+
+                                    {/* Meaning Content - No Truncation */}
+                                    <div className="mt-auto pt-2 border-t border-white/5">
+                                        <div className="text-xs font-bold text-accent-primary mb-1">
+                                            {meaning.keywords[0]}
+                                        </div>
+                                        <div className="text-[11px] text-text-muted leading-relaxed">
+                                            {meaning.description}
+                                        </div>
+                                    </div>
                                 </div>
-                                <div>
-                                    <div className="text-xs text-text-muted">Aura Color</div>
-                                    <div className="font-medium font-mono text-text-primary text-sm">{esotericData.color}</div>
-                                </div>
-                            </div>
-                        </div>
+                            );
+                        })}
                     </div>
                 </div>
 

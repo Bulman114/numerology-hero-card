@@ -14,7 +14,7 @@ const Tabs = ({ tabs, defaultTab = 0, onChange }) => {
     return (
         <div className="space-y-4">
             {/* Tab Headers */}
-            <div className="flex gap-1 border-b border-gray-200 overflow-x-auto" role="tablist">
+            <div className="flex gap-1 border-b border-white/10 overflow-x-auto scroller-none" role="tablist">
                 {tabs.map((tab, idx) => (
                     <button
                         key={idx}
@@ -23,22 +23,22 @@ const Tabs = ({ tabs, defaultTab = 0, onChange }) => {
                         aria-controls={`tabpanel-${idx}`}
                         onClick={() => handleTabChange(idx)}
                         className={`
-              relative px-4 py-2 font-medium transition-colors whitespace-nowrap
+              relative px-6 py-3 font-medium transition-all whitespace-nowrap text-sm tracking-wide
               ${activeTab === idx
-                                ? 'text-lifepath-7'
-                                : 'text-gray-600 hover:text-gray-900'
+                                ? 'text-accent-teal'
+                                : 'text-text-muted hover:text-text-primary'
                             }
             `}
                     >
                         <span className="flex items-center gap-2">
-                            {tab.icon && <tab.icon size={18} />}
+                            {tab.icon && <tab.icon size={16} className={activeTab === idx ? "text-accent-teal" : "opacity-70 group-hover:opacity-100"} />}
                             {tab.label}
                         </span>
 
                         {activeTab === idx && (
                             <motion.div
                                 layoutId="activeTab"
-                                className="absolute bottom-0 left-0 right-0 h-0.5 bg-lifepath-7"
+                                className="absolute bottom-0 left-0 right-0 h-0.5 bg-accent-teal shadow-[0_0_10px_rgba(115,210,222,0.5)]"
                                 transition={{ type: 'spring', stiffness: 500, damping: 30 }}
                             />
                         )}

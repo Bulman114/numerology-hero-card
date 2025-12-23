@@ -35,21 +35,21 @@ const AccordionItem = ({ title, children, index, icon }) => {
     const isOpen = openItems.has(index);
 
     return (
-        <div className="border border-gray-200 rounded-md overflow-hidden">
+        <div className="border border-white/10 rounded-xl overflow-hidden bg-white/5 transition-colors hover:border-white/20">
             <button
                 onClick={() => toggleItem(index)}
-                className="w-full px-4 py-3 flex items-center justify-between bg-gray-50 hover:bg-gray-100 transition-colors text-left"
+                className="w-full px-5 py-4 flex items-center justify-between text-left group"
                 aria-expanded={isOpen}
             >
-                <span className="font-medium flex items-center gap-2">
-                    {icon && <span>{icon}</span>}
+                <span className="font-medium flex items-center gap-3 text-text-primary text-sm tracking-wide">
+                    {icon && <span className="text-accent-teal">{icon}</span>}
                     {title}
                 </span>
                 <motion.div
                     animate={{ rotate: isOpen ? 180 : 0 }}
                     transition={{ duration: 0.2 }}
                 >
-                    <ChevronDown className="w-5 h-5 text-gray-500" />
+                    <ChevronDown className="w-5 h-5 text-text-muted group-hover:text-accent-teal transition-colors" />
                 </motion.div>
             </button>
 
@@ -60,9 +60,9 @@ const AccordionItem = ({ title, children, index, icon }) => {
                         animate={{ height: 'auto', opacity: 1 }}
                         exit={{ height: 0, opacity: 0 }}
                         transition={{ duration: 0.3, ease: 'easeInOut' }}
-                        className="overflow-hidden"
+                        className="overflow-hidden bg-black/20 border-t border-white/5"
                     >
-                        <div className="px-4 py-3 bg-white border-t border-gray-100">
+                        <div className="px-5 py-4">
                             {children}
                         </div>
                     </motion.div>

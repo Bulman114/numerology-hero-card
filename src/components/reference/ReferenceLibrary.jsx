@@ -30,18 +30,20 @@ const ReferenceLibrary = () => {
                 </Button>
             </div>
 
-            <div className="bg-white rounded-lg shadow-lg overflow-hidden">
-                <div className="bg-bg-charcoal text-bg-cream px-6 py-4">
-                    <h1 className="text-2xl font-display flex items-center gap-2">
-                        <Book className="w-6 h-6" />
+            <div className="bg-bg-card/30 backdrop-blur-xl border border-white/10 rounded-3xl overflow-hidden shadow-2xl">
+                <div className="bg-black/20 border-b border-white/5 px-8 py-6">
+                    <h1 className="text-2xl font-display font-bold text-transparent bg-clip-text bg-gradient-to-r from-white to-white/70 flex items-center gap-3">
+                        <div className="p-2 rounded-lg bg-accent-teal/10 text-accent-teal">
+                            <Book size={24} />
+                        </div>
                         Reference Library
                     </h1>
-                    <p className="text-sm opacity-80 mt-1">
-                        Learn about numerology meanings, methods, and interpretations
+                    <p className="text-text-muted mt-2 ml-14 text-sm font-light tracking-wide">
+                        Explore the deeper meanings, ancient methods, and esoteric correspondences
                     </p>
                 </div>
 
-                <div className="p-6">
+                <div className="p-6 md:p-8">
                     <Tabs tabs={tabs} />
                 </div>
             </div>

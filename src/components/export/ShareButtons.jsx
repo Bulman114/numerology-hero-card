@@ -12,7 +12,7 @@ export default function ShareButtons({ profile, onClose }) {
         .join(' ');
 
     const lifePath = profile.numbers.lifePath.value;
-    const shareText = `🔢 My Life Path Number is ${lifePath}! Discover yours with Numerology Hero Card.`;
+    const shareText = `✨ My Life Path Number is ${lifePath}! Reveal your soul's mathematics with Numerology Hero Card.`;
     const shareUrl = typeof window !== 'undefined' ? window.location.origin : 'https://numerology-hero-card.vercel.app';
 
     // Create a minimal shareable link with encoded profile data

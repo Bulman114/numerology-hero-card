@@ -7,12 +7,12 @@ const ReductionPath = ({ letterValues, sum, final, isMaster, title = 'Name Break
     }
 
     return (
-        <div className="space-y-6">
-            <h4 className="text-lg font-semibold text-center">{title}</h4>
+        <div className="space-y-8">
+            <h4 className="text-lg font-display font-medium text-center text-text-primary">{title}</h4>
 
             {/* Letter-Value Grid */}
-            <div className="overflow-x-auto">
-                <table className="mx-auto border-collapse">
+            <div className="overflow-x-auto scroller-none">
+                <table className="mx-auto border-separate border-spacing-2">
                     <thead>
                         <tr>
                             {letterValues.map((lv, idx) => (
@@ -21,7 +21,7 @@ const ReductionPath = ({ letterValues, sum, final, isMaster, title = 'Name Break
                                     initial={{ opacity: 0, y: -10 }}
                                     animate={{ opacity: 1, y: 0 }}
                                     transition={{ delay: idx * 0.05 }}
-                                    className="px-3 py-2 text-2xl font-mono uppercase bg-gray-100 border"
+                                    className="px-4 py-3 text-xl font-mono uppercase bg-white/5 border border-white/5 rounded-t-lg text-text-secondary"
                                 >
                                     {lv.letter}
                                 </motion.th>
@@ -36,7 +36,7 @@ const ReductionPath = ({ letterValues, sum, final, isMaster, title = 'Name Break
                                     initial={{ opacity: 0, y: 10 }}
                                     animate={{ opacity: 1, y: 0 }}
                                     transition={{ delay: idx * 0.05 + 0.2 }}
-                                    className="px-3 py-2 text-xl font-mono text-center border text-lifepath-7 font-bold"
+                                    className="px-4 py-3 text-xl font-mono text-center bg-black/20 border border-white/5 rounded-b-lg text-accent-teal font-bold shadow-inner"
                                 >
                                     {lv.value}
                                 </motion.td>
@@ -51,16 +51,16 @@ const ReductionPath = ({ letterValues, sum, final, isMaster, title = 'Name Break
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 transition={{ delay: 0.5 }}
-                className="text-center"
+                className="text-center p-4 bg-accent-primary/5 rounded-xl border border-accent-primary/10 max-w-md mx-auto"
             >
-                <div className="text-gray-500">Sum of all values:</div>
-                <div className="text-3xl font-mono font-bold">
-                    {letterValues.map(lv => lv.value).join(' + ')} = {sum}
+                <div className="text-text-muted text-xs uppercase tracking-widest mb-1">Sum of all values</div>
+                <div className="text-2xl font-mono font-bold text-text-primary">
+                    {letterValues.map(lv => lv.value).join(' + ')} = <span className="text-accent-primary">{sum}</span>
                 </div>
             </motion.div>
 
             {/* Reduction Arrow */}
-            <div className="text-center text-2xl text-gray-400">↓</div>
+            <div className="text-center text-2xl text-text-muted/50 my-2">↓</div>
 
             {/* Final Result */}
             <motion.div
@@ -69,13 +69,13 @@ const ReductionPath = ({ letterValues, sum, final, isMaster, title = 'Name Break
                 transition={{ delay: 0.7 }}
                 className="text-center"
             >
-                <div className="text-sm text-gray-600 mb-2">Reduced to:</div>
-                <div className="text-6xl font-bold text-lifepath-7">
+                <div className="text-xs font-bold uppercase tracking-widest text-text-muted mb-2">Reduced to</div>
+                <div className="text-7xl font-display font-bold text-transparent bg-clip-text bg-gradient-to-b from-white to-white/70 drop-shadow-2xl">
                     {final}
-                    {isMaster && <span className="text-3xl ml-2">⚡</span>}
+                    {isMaster && <span className="text-4xl ml-2 text-accent-gold align-top">⚡</span>}
                 </div>
                 {isMaster && (
-                    <div className="text-sm text-purple-600 mt-2 font-medium">
+                    <div className="text-xs text-accent-gold mt-2 font-bold uppercase tracking-widest border border-accent-gold/20 bg-accent-gold/10 inline-block px-3 py-1 rounded-full">
                         Master Number
                     </div>
                 )}

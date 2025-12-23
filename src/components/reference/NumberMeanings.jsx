@@ -8,7 +8,7 @@ const NumberMeanings = () => {
 
     return (
         <div className="space-y-4">
-            <p className="text-gray-600 mb-6">
+            <p className="text-text-muted mb-6 leading-relaxed text-sm">
                 Each number from 1-9 and the Master Numbers (11, 22, 33) has unique meanings and characteristics.
                 Click on any number to explore its full interpretation.
             </p>
@@ -23,42 +23,47 @@ const NumberMeanings = () => {
                             key={num}
                             index={idx}
                             title={
-                                <span className="flex items-center gap-3">
+                                <span className="flex items-center gap-4">
                                     <span
-                                        className="w-8 h-8 rounded-full flex items-center justify-center text-white font-bold"
-                                        style={{ backgroundColor: esoteric.color }}
+                                        className="w-10 h-10 rounded-full flex items-center justify-center text-white font-bold text-lg shadow-[0_0_15px_rgba(255,255,255,0.2)]"
+                                        style={{ backgroundColor: esoteric.color, textShadow: '0 0 5px rgba(0,0,0,0.5)' }}
                                     >
                                         {num}
                                     </span>
-                                    <span>
-                                        {meaning.keywords.join(', ')}
-                                        {meaning.isMaster && (
-                                            <span className="ml-2 text-xs px-2 py-0.5 bg-purple-100 text-purple-700 rounded">
-                                                Master
-                                            </span>
-                                        )}
+                                    <span className="flex-1">
+                                        <span className="block text-accent-primary text-xs font-bold uppercase tracking-widest mb-0.5">
+                                            {meaning.keywords[0]}
+                                        </span>
+                                        <span className="text-text-secondary text-sm">
+                                            {meaning.keywords.slice(1).join(', ')}
+                                        </span>
                                     </span>
+                                    {meaning.isMaster && (
+                                        <span className="hidden sm:inline-block ml-2 text-[10px] font-bold px-2 py-0.5 bg-accent-gold/20 text-accent-gold border border-accent-gold/30 rounded uppercase tracking-wider">
+                                            Master
+                                        </span>
+                                    )}
                                 </span>
                             }
                         >
-                            <div className="space-y-4">
+                            <div className="space-y-6">
                                 {/* Description */}
-                                <p className="text-gray-700">{meaning.description}</p>
+                                <p className="text-text-secondary leading-relaxed text-sm">{meaning.description}</p>
 
                                 {/* Life Purpose */}
                                 <div>
-                                    <h5 className="font-semibold text-sm text-gray-600 mb-1">Life Purpose</h5>
-                                    <p className="text-gray-800">{meaning.lifePurpose}</p>
+                                    <h5 className="font-bold text-xs uppercase tracking-widest text-text-muted mb-2">Life Purpose</h5>
+                                    <p className="text-text-primary text-sm">{meaning.lifePurpose}</p>
                                 </div>
 
                                 {/* Strengths */}
                                 <div>
-                                    <h5 className="font-semibold text-sm text-green-700 mb-1">Strengths</h5>
+                                    <h5 className="font-bold text-xs uppercase tracking-widest text-accent-teal mb-3">Strengths</h5>
                                     <div className="flex flex-wrap gap-2">
                                         {meaning.strengths.map((s, i) => (
                                             <span
                                                 key={i}
-                                                className="px-2 py-1 bg-green-50 text-green-700 text-sm rounded"
+                                                className="px-3 py-1 bg-accent-teal/10 border border-accent-teal/20 text-accent-teal text-xs font-medium rounded-lg"
                                             >
                                                 {s}
                                             </span>
@@ -68,12 +73,12 @@ const NumberMeanings = () => {
 
                                 {/* Challenges */}
                                 <div>
-                                    <h5 className="font-semibold text-sm text-orange-700 mb-1">Challenges</h5>
+                                    <h5 className="font-bold text-xs uppercase tracking-widest text-red-300 mb-3">Challenges</h5>
                                     <div className="flex flex-wrap gap-2">
                                         {meaning.challenges.map((c, i) => (
                                             <span
                                                 key={i}
-                                                className="px-2 py-1 bg-orange-50 text-orange-700 text-sm rounded"
+                                                className="px-3 py-1 bg-red-500/10 border border-red-500/20 text-red-300 text-xs font-medium rounded-lg"
                                             >
                                                 {c}
                                             </span>
@@ -83,18 +88,18 @@ const NumberMeanings = () => {
 
                                 {/* Shadow Side */}
                                 <div>
-                                    <h5 className="font-semibold text-sm text-gray-600 mb-1">Shadow Side</h5>
-                                    <p className="text-gray-700 italic">{meaning.shadowSide}</p>
+                                    <h5 className="font-bold text-xs uppercase tracking-widest text-text-muted mb-2">Shadow Side</h5>
+                                    <p className="text-text-secondary text-sm italic border-l-2 border-white/10 pl-3">{meaning.shadowSide}</p>
                                 </div>
 
                                 {/* Careers */}
                                 <div>
-                                    <h5 className="font-semibold text-sm text-blue-700 mb-1">Ideal Careers</h5>
+                                    <h5 className="font-bold text-xs uppercase tracking-widest text-blue-300 mb-3">Ideal Careers</h5>
                                     <div className="flex flex-wrap gap-2">
                                         {meaning.careers.map((c, i) => (
                                             <span
                                                 key={i}
-                                                className="px-2 py-1 bg-blue-50 text-blue-700 text-sm rounded"
+                                                className="px-3 py-1 bg-blue-400/10 border border-blue-400/20 text-blue-300 text-xs font-medium rounded-lg"
                                             >
                                                 {c}
                                             </span>
@@ -103,13 +108,13 @@ const NumberMeanings = () => {
                                 </div>
 
                                 {/* Esoteric */}
-                                <div className="pt-3 border-t">
-                                    <h5 className="font-semibold text-sm text-purple-700 mb-2">Esoteric Correspondences</h5>
-                                    <div className="grid grid-cols-2 gap-2 text-sm">
-                                        <div><span className="text-gray-500">Tarot:</span> {esoteric.tarot}</div>
-                                        <div><span className="text-gray-500">Planet:</span> {esoteric.planet}</div>
-                                        <div><span className="text-gray-500">Element:</span> {esoteric.element}</div>
-                                        <div><span className="text-gray-500">Gemstone:</span> {esoteric.gemstone}</div>
+                                <div className="pt-4 border-t border-white/10">
+                                    <h5 className="font-bold text-xs uppercase tracking-widest text-accent-primary mb-3">Esoteric Correspondences</h5>
+                                    <div className="grid grid-cols-2 gap-y-2 gap-x-4 text-sm">
+                                        <div className="flex justify-between border-b border-white/5 pb-1"><span className="text-text-muted">Tarot</span> <span className="text-text-primary text-right">{esoteric.tarot}</span></div>
+                                        <div className="flex justify-between border-b border-white/5 pb-1"><span className="text-text-muted">Planet</span> <span className="text-text-primary text-right">{esoteric.planet}</span></div>
+                                        <div className="flex justify-between border-b border-white/5 pb-1"><span className="text-text-muted">Element</span> <span className="text-text-primary text-right">{esoteric.element}</span></div>
+                                        <div className="flex justify-between border-b border-white/5 pb-1"><span className="text-text-muted">Gemstone</span> <span className="text-text-primary text-right">{esoteric.gemstone}</span></div>
                                     </div>
                                 </div>
                             </div>

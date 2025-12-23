@@ -81,11 +81,11 @@ const CalculationTree = () => {
                         final={numbers.expression.breakdown.lastName.value}
                         isMaster={numbers.expression.breakdown.lastName.isMaster}
                     />
-                    <div className="text-center pt-6 border-t-2 border-gray-200">
-                        <div className="text-gray-600 mb-2">Combined Expression Number:</div>
-                        <div className="text-6xl font-bold text-lifepath-7">
+                    <div className="text-center pt-8 border-t border-white/10 mt-8">
+                        <div className="text-text-muted mb-3 text-sm uppercase tracking-widest font-bold">Combined Expression Number</div>
+                        <div className="text-7xl font-display font-bold text-transparent bg-clip-text bg-gradient-to-b from-white to-white/70 drop-shadow-lg">
                             {numbers.expression.value}
-                            {numbers.expression.isMaster && <span className="text-3xl ml-2">⚡</span>}
+                            {numbers.expression.isMaster && <span className="text-4xl ml-2 text-accent-gold align-top">⚡</span>}
                         </div>
                     </div>
                 </div>
@@ -129,13 +129,20 @@ const CalculationTree = () => {
                 </Button>
             </div>
 
-            <div className="bg-white rounded-lg shadow-lg overflow-hidden">
-                <div className="bg-bg-charcoal text-bg-cream px-6 py-4">
-                    <h1 className="text-2xl font-display">Calculation Breakdown</h1>
-                    <p className="text-sm opacity-80 mt-1">{fullName}</p>
+            <div className="bg-bg-card/30 backdrop-blur-xl border border-white/10 rounded-3xl overflow-hidden shadow-2xl">
+                <div className="bg-black/20 border-b border-white/5 px-8 py-6">
+                    <h1 className="text-2xl font-display font-bold text-transparent bg-clip-text bg-gradient-to-r from-white to-white/70 flex items-center gap-3">
+                        <div className="p-2 rounded-lg bg-accent-primary/10 text-accent-primary">
+                            <Calculator size={24} />
+                        </div>
+                        Calculation Breakdown
+                    </h1>
+                    <p className="text-text-muted mt-2 ml-14 text-sm font-mono tracking-wide">
+                        {fullName}
+                    </p>
                 </div>
 
-                <div className="p-6">
+                <div className="p-6 md:p-8">
                     <Tabs tabs={tabs} />
                 </div>
             </div>
