@@ -173,6 +173,7 @@ export const analyzeInput = (input) => {
     const phoneRegex = /^(\+?\d{1,2}[\s.-]?)?\(?(\d{3})\)?[\s.-]?(\d{3})[\s.-]?(\d{4})$/;
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     const dateRegex = /^(0[1-9]|1[0-2])\/(0[1-9]|[12]\d|3[01])\/(19|20)\d{2}$/; // Simple MM/DD/YYYY
+    const timeRegex = /^([01]?\d|2[0-3]):([0-5]\d)(\s?[AP]M)?$/i; // HH:MM [AM/PM]
     const licensePlateRegex = /^[A-Z0-9]{1,7}$/; // Generic US style
 
     if (emailRegex.test(raw)) {
@@ -200,6 +201,16 @@ export const analyzeInput = (input) => {
             { label: 'Day', value: d },
             { label: 'Year', value: y }
         ];
+    } else if (timeRegex.test(raw)) {
+        analysis.type = 'Time';
+        const match = raw.match(timeRegex);
+        if (match) {
+            analysis.breakdown = [
+                { label: 'Hour', value: match[1] },
+                { label: 'Minute', value: match[2] },
+                { label: 'Period', value: match[3] ? match[3].trim().toUpperCase() : '24H' }
+            ];
+        }
     } else if (analysis.isNumeric) {
         analysis.type = 'Number';
     } else if (analysis.isAlpha) {
