@@ -1,0 +1,150 @@
+@import "tailwindcss";
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;600&display=swap');
+
+/* ============================================
+   THEME CONFIGURATION (Tailwind v4)
+   ============================================ */
+@theme {
+  /* Life Path Colors */
+  --color-lifepath-1: #E74C3C;
+  --color-lifepath-2: #F39C12;
+  --color-lifepath-3: #F1C40F;
+  --color-lifepath-4: #2ECC71;
+  --color-lifepath-5: #3498DB;
+  --color-lifepath-6: #9B59B6;
+  --color-lifepath-7: #5D3FD3;
+  --color-lifepath-8: #34495E;
+  --color-lifepath-9: #95A5A6;
+  --color-lifepath-11: #ECF0F1;
+  --color-lifepath-22: #C0392B;
+  --color-lifepath-33: #16A085;
+
+  /* Background Colors */
+  --color-bg-cream: #F5F5DC;
+  --color-bg-charcoal: #2F4F4F;
+
+  /* Font Families */
+  --font-sans: 'Inter', system-ui, sans-serif;
+  --font-mono: 'IBM Plex Mono', monospace;
+  --font-display: 'Inter', system-ui, sans-serif;
+
+  /* Custom Animations */
+  --animate-fade-in: fadeIn 0.5s ease-in;
+  --animate-slide-up: slideUp 0.5s ease-out;
+  --animate-cascade: cascade 1s ease-in-out;
+}
+
+/* ============================================
+   BASE STYLES
+   ============================================ */
+@layer base {
+  * {
+    @apply antialiased;
+  }
+
+  html, body, #root {
+    @apply min-h-screen;
+  }
+
+  body {
+    @apply bg-bg-cream text-bg-charcoal font-sans;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-display font-semibold;
+  }
+}
+
+/* ============================================
+   COMPONENT STYLES
+   ============================================ */
+@layer components {
+  /* Hero Card Container */
+  .hero-card {
+    @apply bg-bg-cream border-4 border-bg-charcoal rounded-lg overflow-hidden shadow-2xl;
+  }
+
+  /* Number Display */
+  .number-display {
+    @apply text-6xl md:text-8xl font-bold font-mono;
+  }
+
+  /* Input Field */
+  .input-field {
+    @apply w-full px-4 py-2 border border-gray-300 rounded-md
+           focus:outline-none focus:ring-2 focus:ring-lifepath-7 focus:border-transparent
+           transition-all bg-white;
+  }
+
+  /* Button Variants */
+  .btn {
+    @apply px-6 py-3 rounded-md font-medium transition-colors
+           focus:outline-none focus:ring-2 focus:ring-offset-2 cursor-pointer;
+  }
+
+  .btn-primary {
+    @apply btn bg-lifepath-7 text-white hover:opacity-90 focus:ring-lifepath-7;
+  }
+
+  .btn-secondary {
+    @apply btn bg-gray-200 text-gray-800 hover:bg-gray-300 focus:ring-gray-400;
+  }
+
+  /* Master Number Badge */
+  .master-badge {
+    @apply inline-flex items-center px-2 py-1 rounded-md text-sm font-medium
+           bg-purple-100 text-purple-800;
+  }
+}
+
+/* ============================================
+   KEYFRAME ANIMATIONS
+   ============================================ */
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes slideUp {
+  from {
+    transform: translateY(20px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+@keyframes cascade {
+  0% {
+    transform: scale(0.8);
+    opacity: 0;
+  }
+  50% {
+    transform: scale(1.1);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+/* ============================================
+   PRINT STYLES
+   ============================================ */
+@media print {
+  body {
+    @apply bg-white;
+  }
+
+  .no-print {
+    display: none !important;
+  }
+
+  .hero-card {
+    @apply shadow-none border-2;
+    page-break-inside: avoid;
+  }
+}
