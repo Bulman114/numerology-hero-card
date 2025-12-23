@@ -23,9 +23,9 @@ export default function ProfileLibrary() {
     if (profiles.length === 0) {
         return (
             <div className="max-w-4xl mx-auto p-6">
-                <h1 className="text-3xl font-display mb-8 text-center">📚 Profile Library</h1>
-                <div className="text-center py-12 bg-white rounded-lg shadow">
-                    <p className="text-gray-600 mb-4">No profiles saved yet.</p>
+                <h1 className="text-3xl font-display mb-8 text-center text-text-primary">📚 Profile Library</h1>
+                <div className="text-center py-12 glass-card">
+                    <p className="text-text-secondary mb-4">No profiles saved yet.</p>
                     <button onClick={() => navigate('/')} className="btn-primary">
                         Create Your First Profile
                     </button>
@@ -37,7 +37,7 @@ export default function ProfileLibrary() {
     return (
         <div className="max-w-4xl mx-auto p-6">
             <div className="flex justify-between items-center mb-8">
-                <h1 className="text-3xl font-display">📚 Profile Library</h1>
+                <h1 className="text-3xl font-display text-text-primary">📚 Profile Library</h1>
                 <button onClick={() => navigate('/')} className="btn-primary">
                     + New Profile
                 </button>
@@ -57,19 +57,19 @@ export default function ProfileLibrary() {
                             animate={{ opacity: 1, y: 0 }}
                             transition={{ delay: idx * 0.1 }}
                             onClick={() => handleSelectProfile(profile.id)}
-                            className="bg-white rounded-lg shadow-md overflow-hidden cursor-pointer hover:shadow-lg transition-shadow"
+                            className="bg-bg-card rounded-xl border border-border-default overflow-hidden cursor-pointer hover:border-accent-primary/50 transition-all hover:shadow-lg hover:shadow-accent-primary/10"
                         >
                             {/* Color Bar */}
                             <div
-                                className="h-2"
+                                className="h-1.5"
                                 style={{ backgroundColor: esotericData.color }}
                             />
 
                             <div className="p-4">
                                 <div className="flex justify-between items-start">
                                     <div className="flex-1">
-                                        <h3 className="font-display text-lg font-semibold">{fullName}</h3>
-                                        <div className="flex items-center gap-4 mt-2 text-sm text-gray-600">
+                                        <h3 className="font-display text-lg font-semibold text-text-primary">{fullName}</h3>
+                                        <div className="flex items-center gap-4 mt-2 text-sm text-text-muted">
                                             <span className="flex items-center gap-1">
                                                 <Calendar size={14} />
                                                 {`${profile.birthdate.month}/${profile.birthdate.day}/${profile.birthdate.year}`}
@@ -79,7 +79,7 @@ export default function ProfileLibrary() {
 
                                     {/* Life Path Badge */}
                                     <div
-                                        className="w-12 h-12 rounded-full flex items-center justify-center text-white font-bold text-xl"
+                                        className="w-12 h-12 rounded-full flex items-center justify-center text-white font-bold text-xl shadow-lg"
                                         style={{ backgroundColor: esotericData.color }}
                                     >
                                         {profile.numbers.lifePath.value}
@@ -87,18 +87,18 @@ export default function ProfileLibrary() {
                                 </div>
 
                                 {/* Keywords */}
-                                <div className="mt-3 text-sm text-gray-600">
+                                <div className="mt-3 text-sm text-text-secondary">
                                     {esotericData.keywords.join(' • ')}
                                 </div>
 
                                 {/* Actions */}
                                 <div className="mt-4 flex justify-between items-center">
-                                    <span className="text-xs text-gray-400">
+                                    <span className="text-xs text-text-muted">
                                         {profile.calculationMethod}
                                     </span>
                                     <button
                                         onClick={(e) => handleDelete(e, profile.id)}
-                                        className="p-2 text-gray-400 hover:text-red-500 transition-colors"
+                                        className="p-2 text-text-muted hover:text-red-400 transition-colors"
                                         title="Delete profile"
                                     >
                                         <Trash2 size={18} />

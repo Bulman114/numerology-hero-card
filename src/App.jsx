@@ -13,7 +13,7 @@ function Navigation() {
   const { profiles } = useProfileStore();
 
   return (
-    <nav className="bg-bg-charcoal text-bg-cream px-6 py-4 no-print">
+    <nav className="bg-bg-secondary/80 backdrop-blur-xl border-b border-border-subtle text-text-primary px-6 py-4 sticky top-0 z-50 no-print">
       <div className="max-w-4xl mx-auto flex justify-between items-center">
         <Link to="/" className="text-xl font-display flex items-center gap-2">
           🔢 Numerology Hero Card
@@ -92,7 +92,7 @@ function CardPage() {
       <div className="max-w-4xl mx-auto px-6 mt-4 text-center no-print">
         <Link
           to={`/breakdown/${profile.id}`}
-          className="inline-flex items-center gap-2 text-lifepath-7 hover:underline"
+          className="inline-flex items-center gap-2 text-accent-primary hover:text-accent-secondary transition-colors"
         >
           <Calculator size={18} />
           View Calculation Breakdown
@@ -105,7 +105,7 @@ function CardPage() {
 function App() {
   return (
     <BrowserRouter>
-      <div className="min-h-screen bg-bg-cream">
+      <div className="min-h-screen">
         <Navigation />
         <Routes>
           <Route path="/" element={<HomePage />} />

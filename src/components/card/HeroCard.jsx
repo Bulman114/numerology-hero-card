@@ -82,7 +82,7 @@ export default function HeroCard({ profile }) {
             {/* Card Container - ref for export */}
             <div ref={cardRef} className="hero-card">
                 {/* Card Header */}
-                <div className="px-8 py-6 bg-bg-charcoal text-bg-cream">
+                <div className="px-8 py-6 bg-gradient-to-r from-accent-secondary to-accent-primary text-white">
                     <h2 className="text-3xl font-display uppercase tracking-wide">
                         {fullName}
                     </h2>
@@ -98,8 +98,8 @@ export default function HeroCard({ profile }) {
 
                 {/* Life Path Display */}
                 <div
-                    className="py-12 text-center"
-                    style={{ backgroundColor: esotericData.color + '20' }}
+                    className="py-12 text-center bg-bg-elevated"
+                    style={{ background: `linear-gradient(135deg, ${esotericData.color}15 0%, ${esotericData.color}30 100%)` }}
                 >
                     <motion.div
                         initial={{ scale: 0 }}
@@ -111,11 +111,11 @@ export default function HeroCard({ profile }) {
                             {profile.numbers.lifePath.value}
                         </div>
                         {profile.numbers.lifePath.isMaster && (
-                            <div className="text-2xl mt-2">⚡ Master Number</div>
+                            <div className="master-badge mx-auto mt-3">⚡ Master Number</div>
                         )}
                     </motion.div>
 
-                    <div className="mt-4 text-xl font-medium space-x-2">
+                    <div className="mt-4 text-xl font-medium space-x-2 text-text-primary">
                         {esotericData.keywords.map((keyword, idx) => (
                             <span key={idx}>
                                 {keyword}
@@ -126,10 +126,10 @@ export default function HeroCard({ profile }) {
                 </div>
 
                 {/* Reduction ID */}
-                <div className="px-8 py-4 bg-white border-t-2 border-bg-charcoal">
+                <div className="px-8 py-4 bg-bg-secondary border-t border-border-default">
                     <div className="flex justify-between items-center">
-                        <span className="font-mono text-sm">REDUCTION ID:</span>
-                        <span className="font-mono font-bold">
+                        <span className="font-mono text-sm text-text-secondary">REDUCTION ID:</span>
+                        <span className="font-mono font-bold text-accent-primary">
                             {profile.numbers.expression.value}
                             {profile.numbers.expression.isMaster && ' ⚡'}
                         </span>
@@ -137,17 +137,17 @@ export default function HeroCard({ profile }) {
                 </div>
 
                 {/* Core Numbers Grid */}
-                <div className="px-8 py-6 bg-white border-t-2 border-bg-charcoal">
-                    <h3 className="text-xl font-display mb-4 uppercase">Core Numbers</h3>
+                <div className="px-8 py-6 bg-bg-card border-t border-border-default">
+                    <h3 className="text-xl font-display mb-4 uppercase text-text-primary">Core Numbers</h3>
 
                     <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
                         {coreNumbers.map((item, idx) => (
                             <div
                                 key={idx}
-                                className="bg-gray-50 p-4 rounded-md border border-gray-200"
+                                className="bg-bg-elevated p-4 rounded-lg border border-border-subtle"
                             >
-                                <div className="text-sm text-gray-600 mb-1">{item.label}</div>
-                                <div className="text-3xl font-bold text-lifepath-7">
+                                <div className="text-sm text-text-muted mb-1">{item.label}</div>
+                                <div className="text-3xl font-bold text-accent-primary">
                                     {item.value}
                                     {item.isMaster && <span className="text-lg ml-1">⚡</span>}
                                 </div>
@@ -157,35 +157,35 @@ export default function HeroCard({ profile }) {
                 </div>
 
                 {/* Esoteric Correspondences */}
-                <div className="px-8 py-6 bg-white border-t-2 border-bg-charcoal">
-                    <h3 className="text-xl font-display mb-4 uppercase">Esoteric Correspondences</h3>
+                <div className="px-8 py-6 bg-bg-card border-t border-border-default">
+                    <h3 className="text-xl font-display mb-4 uppercase text-text-primary">Esoteric Correspondences</h3>
 
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                         {esotericItems.map((item, idx) => (
-                            <div key={idx} className="flex items-center gap-3">
+                            <div key={idx} className="flex items-center gap-3 bg-bg-elevated p-3 rounded-lg">
                                 <span className="text-2xl">{item.icon}</span>
                                 <div>
-                                    <div className="text-xs text-gray-600">{item.label}</div>
-                                    <div className="font-medium">{item.value}</div>
+                                    <div className="text-xs text-text-muted">{item.label}</div>
+                                    <div className="font-medium text-text-primary">{item.value}</div>
                                 </div>
                             </div>
                         ))}
 
-                        <div className="flex items-center gap-3 col-span-full">
+                        <div className="flex items-center gap-3 bg-bg-elevated p-3 rounded-lg col-span-full">
                             <div
-                                className="w-12 h-12 rounded-full border-2 border-gray-300"
+                                className="w-12 h-12 rounded-full border-2 border-border-default shadow-lg"
                                 style={{ backgroundColor: esotericData.color }}
                             />
                             <div>
-                                <div className="text-xs text-gray-600">Color</div>
-                                <div className="font-medium font-mono">{esotericData.color}</div>
+                                <div className="text-xs text-text-muted">Color</div>
+                                <div className="font-medium font-mono text-text-primary">{esotericData.color}</div>
                             </div>
                         </div>
                     </div>
                 </div>
 
                 {/* Metadata Footer */}
-                <div className="px-8 py-4 bg-gray-100 border-t-2 border-bg-charcoal text-xs text-gray-600 flex justify-between">
+                <div className="px-8 py-4 bg-bg-secondary border-t border-border-default text-xs text-text-muted flex justify-between">
                     <span>Method: {profile.calculationMethod}</span>
                     <span>Generated: {new Date(profile.createdAt).toLocaleDateString()}</span>
                 </div>

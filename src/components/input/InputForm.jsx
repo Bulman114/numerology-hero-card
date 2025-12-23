@@ -103,14 +103,14 @@ export default function InputForm({ onSubmit }) {
             animate={{ opacity: 1, y: 0 }}
             className="max-w-2xl mx-auto p-6"
         >
-            <h1 className="text-4xl font-display text-center mb-8 text-bg-charcoal">
+            <h1 className="text-4xl font-display text-center mb-8 text-text-primary">
                 🔢 Numerology Hero Card
             </h1>
 
-            <form onSubmit={handleSubmit} className="space-y-6 bg-white p-8 rounded-lg shadow-lg">
+            <form onSubmit={handleSubmit} className="space-y-6 glass-card p-8">
                 {/* First Name */}
                 <div className="space-y-1">
-                    <label className="block text-sm font-medium text-gray-700">
+                    <label className="block text-sm font-medium text-text-secondary">
                         First Name <span className="text-red-500">*</span>
                     </label>
                     <input
@@ -126,7 +126,7 @@ export default function InputForm({ onSubmit }) {
 
                 {/* Middle Name */}
                 <div className="space-y-1">
-                    <label className="block text-sm font-medium text-gray-700">
+                    <label className="block text-sm font-medium text-text-secondary">
                         Middle Name (Optional)
                     </label>
                     <input
@@ -142,7 +142,7 @@ export default function InputForm({ onSubmit }) {
 
                 {/* Last Name */}
                 <div className="space-y-1">
-                    <label className="block text-sm font-medium text-gray-700">
+                    <label className="block text-sm font-medium text-text-secondary">
                         Last Name <span className="text-red-500">*</span>
                     </label>
                     <input
@@ -172,7 +172,7 @@ export default function InputForm({ onSubmit }) {
 
                 {/* Birthdate */}
                 <div className="space-y-2">
-                    <label className="block text-sm font-medium text-gray-700">
+                    <label className="block text-sm font-medium text-text-secondary">
                         Birthdate <span className="text-red-500">*</span>
                     </label>
 
@@ -221,7 +221,7 @@ export default function InputForm({ onSubmit }) {
 
                 {/* Calculation Method */}
                 <div className="space-y-2">
-                    <label className="block text-sm font-medium text-gray-700">
+                    <label className="block text-sm font-medium text-text-secondary">
                         Calculation Method
                     </label>
                     <div className="flex gap-4">

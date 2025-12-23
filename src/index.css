@@ -3,25 +3,44 @@
 
 /* ============================================
    THEME CONFIGURATION (Tailwind v4)
+   Dark Mystical Theme
    ============================================ */
 @theme {
-  /* Life Path Colors */
-  --color-lifepath-1: #E74C3C;
-  --color-lifepath-2: #F39C12;
-  --color-lifepath-3: #F1C40F;
-  --color-lifepath-4: #2ECC71;
-  --color-lifepath-5: #3498DB;
-  --color-lifepath-6: #9B59B6;
-  --color-lifepath-7: #5D3FD3;
-  --color-lifepath-8: #34495E;
-  --color-lifepath-9: #95A5A6;
-  --color-lifepath-11: #ECF0F1;
-  --color-lifepath-22: #C0392B;
-  --color-lifepath-33: #16A085;
+  /* Life Path Colors - Vibrant for contrast on dark */
+  --color-lifepath-1: #FF6B6B;
+  --color-lifepath-2: #FFB347;
+  --color-lifepath-3: #FFD93D;
+  --color-lifepath-4: #6BCB77;
+  --color-lifepath-5: #4D96FF;
+  --color-lifepath-6: #C77DFF;
+  --color-lifepath-7: #9D4EDD;
+  --color-lifepath-8: #7B8CDE;
+  --color-lifepath-9: #A0A0A0;
+  --color-lifepath-11: #E0AAFF;
+  --color-lifepath-22: #FF6B6B;
+  --color-lifepath-33: #64DFDF;
 
-  /* Background Colors */
-  --color-bg-cream: #F5F5DC;
-  --color-bg-charcoal: #2F4F4F;
+  /* Core Theme Colors */
+  --color-bg-primary: #0D0D1A;
+  --color-bg-secondary: #1A1A2E;
+  --color-bg-card: #16213E;
+  --color-bg-elevated: #1F2B4D;
+
+  /* Text Colors */
+  --color-text-primary: #F8F8FF;
+  --color-text-secondary: #A8B2D1;
+  --color-text-muted: #6B7394;
+
+  /* Accent Colors */
+  --color-accent-primary: #9D4EDD;
+  --color-accent-secondary: #7B2CBF;
+  --color-accent-gold: #FFD700;
+  --color-accent-glow: rgba(157, 78, 221, 0.3);
+
+  /* Border Colors */
+  --color-border-subtle: rgba(168, 178, 209, 0.1);
+  --color-border-default: rgba(168, 178, 209, 0.2);
+  --color-border-accent: rgba(157, 78, 221, 0.5);
 
   /* Font Families */
   --font-sans: 'Inter', system-ui, sans-serif;
@@ -32,6 +51,7 @@
   --animate-fade-in: fadeIn 0.5s ease-in;
   --animate-slide-up: slideUp 0.5s ease-out;
   --animate-cascade: cascade 1s ease-in-out;
+  --animate-glow: glow 2s ease-in-out infinite alternate;
 }
 
 /* ============================================
@@ -49,7 +69,10 @@
   }
 
   body {
-    @apply bg-bg-cream text-bg-charcoal font-sans;
+    @apply bg-bg-primary text-text-primary font-sans;
+    background-image:
+      radial-gradient(ellipse at top, rgba(157, 78, 221, 0.15) 0%, transparent 50%),
+      radial-gradient(ellipse at bottom right, rgba(123, 44, 191, 0.1) 0%, transparent 50%);
   }
 
   h1,
@@ -58,7 +81,25 @@
   h4,
   h5,
   h6 {
-    @apply font-display font-semibold;
+    @apply font-display font-semibold text-text-primary;
+  }
+
+  /* Custom scrollbar for dark theme */
+  ::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+  }
+
+  ::-webkit-scrollbar-track {
+    @apply bg-bg-secondary;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    @apply bg-accent-primary/50 rounded-full;
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    @apply bg-accent-primary;
   }
 }
 
@@ -69,31 +110,58 @@
 
   /* Hero Card Container */
   .hero-card {
-    @apply bg-bg-cream border-4 border-bg-charcoal rounded-lg overflow-hidden shadow-2xl;
+    @apply bg-bg-card border border-border-default rounded-2xl overflow-hidden;
+    box-shadow:
+      0 0 0 1px rgba(157, 78, 221, 0.1),
+      0 20px 50px -15px rgba(0, 0, 0, 0.5),
+      0 0 80px -20px rgba(157, 78, 221, 0.3);
   }
 
   /* Number Display */
   .number-display {
     @apply text-6xl md:text-8xl font-bold font-mono;
+    text-shadow: 0 0 40px var(--color-accent-glow);
   }
 
   /* Input Field */
   .input-field {
-    @apply w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-lifepath-7 focus:border-transparent transition-all bg-white;
+    @apply w-full px-4 py-3 rounded-lg bg-bg-secondary border border-border-default text-text-primary placeholder-text-muted focus:outline-none focus:ring-2 focus:ring-accent-primary focus:border-transparent transition-all;
   }
 
-  /* Button Base - no @apply of custom classes */
+  /* Button Primary */
   .btn-primary {
-    @apply px-6 py-3 rounded-md font-medium transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2 cursor-pointer bg-lifepath-7 text-white hover:opacity-90 focus:ring-lifepath-7;
+    @apply px-6 py-3 rounded-lg font-semibold transition-all focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-bg-primary cursor-pointer bg-accent-primary text-white hover:bg-accent-secondary focus:ring-accent-primary;
+    box-shadow: 0 4px 20px -5px rgba(157, 78, 221, 0.5);
   }
 
+  .btn-primary:hover {
+    box-shadow: 0 6px 30px -5px rgba(157, 78, 221, 0.7);
+    transform: translateY(-1px);
+  }
+
+  /* Button Secondary */
   .btn-secondary {
-    @apply px-6 py-3 rounded-md font-medium transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2 cursor-pointer bg-gray-200 text-gray-800 hover:bg-gray-300 focus:ring-gray-400;
+    @apply px-6 py-3 rounded-lg font-medium transition-all focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-bg-primary cursor-pointer bg-bg-elevated text-text-primary border border-border-default hover:bg-bg-card hover:border-accent-primary/50 focus:ring-accent-primary;
+  }
+
+  /* Glass Card */
+  .glass-card {
+    @apply bg-bg-card/80 backdrop-blur-xl border border-border-default rounded-2xl;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
   }
 
   /* Master Number Badge */
   .master-badge {
-    @apply inline-flex items-center px-2 py-1 rounded-md text-sm font-medium bg-purple-100 text-purple-800;
+    @apply inline-flex items-center px-3 py-1 rounded-full text-sm font-semibold bg-accent-gold/20 text-accent-gold border border-accent-gold/30;
+  }
+
+  /* Navigation Link */
+  .nav-link {
+    @apply text-text-secondary hover:text-accent-primary transition-colors;
+  }
+
+  .nav-link-active {
+    @apply text-accent-primary;
   }
 }
 
@@ -139,12 +207,22 @@
   }
 }
 
+@keyframes glow {
+  from {
+    box-shadow: 0 0 20px rgba(157, 78, 221, 0.2);
+  }
+
+  to {
+    box-shadow: 0 0 40px rgba(157, 78, 221, 0.4);
+  }
+}
+
 /* ============================================
    PRINT STYLES
    ============================================ */
 @media print {
   body {
-    @apply bg-white;
+    @apply bg-white text-black;
   }
 
   .no-print {
@@ -152,7 +230,7 @@
   }
 
   .hero-card {
-    @apply shadow-none border-2;
+    @apply shadow-none border-2 border-black;
     page-break-inside: avoid;
   }
 }
