@@ -122,7 +122,7 @@ export default function HeroCard({ profile }) {
                 </div>
 
                 {/* Life Path Section - Compact Hero */}
-                <div className="relative z-10 px-12 md:px-24 py-8 flex items-center justify-between gap-8 bg-gradient-to-b from-accent-primary/10 to-transparent">
+                <div className="relative z-10 px-6 md:px-24 py-8 flex items-center justify-between gap-8 bg-gradient-to-b from-accent-primary/10 to-transparent">
                     <div className="flex-1">
                         <div className="text-sm font-bold text-accent-primary uppercase tracking-widest mb-2">Life Path Number</div>
                         <div className="text-text-secondary text-sm leading-relaxed max-w-lg">
@@ -142,7 +142,7 @@ export default function HeroCard({ profile }) {
                             style={{ backgroundColor: esotericData.color, opacity: 0.4 }}
                         />
 
-                        <div className="text-8xl font-display font-bold text-white relative z-10 bg-clip-text text-transparent bg-gradient-to-b from-white to-white/80 drop-shadow-2xl">
+                        <div className="text-7xl md:text-8xl font-display font-bold text-white relative z-10 bg-clip-text text-transparent bg-gradient-to-b from-white to-white/80 drop-shadow-2xl">
                             {profile.numbers.lifePath.value}
                         </div>
 
@@ -158,7 +158,7 @@ export default function HeroCard({ profile }) {
 
                 {/* Esoteric Strip - Horizontal Layout */}
                 <div className="relative z-10 border-t border-white/5 bg-black/10 backdrop-blur-sm px-8 py-6">
-                    <div className="flex flex-wrap items-center justify-center gap-x-8 gap-y-4">
+                    <div className="flex flex-col sm:flex-row flex-wrap items-center justify-center gap-x-8 gap-y-4">
                         {esotericItems.map((item, idx) => (
                             <div key={idx} className="flex items-center gap-3">
                                 <div className="w-8 h-8 rounded-lg bg-bg-secondary border border-border-default flex items-center justify-center overflow-hidden relative shrink-0 text-text-muted">
@@ -237,7 +237,7 @@ export default function HeroCard({ profile }) {
                 </div>
 
                 {/* Footer */}
-                <div className="px-8 py-4 bg-black/20 backdrop-blur-xl border-t border-white/5 text-[10px] text-text-muted flex justify-between uppercase tracking-wider">
+                <div className="px-8 py-4 bg-black/20 backdrop-blur-xl border-t border-white/5 text-[10px] text-text-muted flex flex-col sm:flex-row justify-between gap-2 uppercase tracking-wider">
                     <span>Generated on {new Date(profile.createdAt).toLocaleDateString()}</span>
                     <span>Numerology Hero Card • {profile.id.slice(0, 8)}</span>
                 </div>

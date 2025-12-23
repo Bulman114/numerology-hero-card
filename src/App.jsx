@@ -1,5 +1,7 @@
-import { BrowserRouter, Routes, Route, useNavigate, Link } from 'react-router-dom';
-import { Library, PlusCircle, Heart, Book, Calculator, Scale, Binary } from 'lucide-react';
+import { useState } from 'react';
+import { BrowserRouter, Routes, Route, useNavigate, Link, useLocation } from 'react-router-dom';
+import { AnimatePresence, motion } from 'framer-motion';
+import { Library, PlusCircle, Heart, Book, Calculator, Scale, Binary, Menu, X } from 'lucide-react';
 import useProfileStore from './store/useProfileStore';
 import InputForm from './components/input/InputForm';
 import HeroCard from './components/card/HeroCard';
@@ -13,11 +15,22 @@ import './index.css';
 
 function Navigation() {
   const { profiles } = useProfileStore();
+  const [isOpen, setIsOpen] = useState(false);
+  const location = useLocation();
+
+  const links = [
+    { to: "/", icon: PlusCircle, label: "New" },
+    { to: "/profiles", icon: Library, label: `Library (${profiles.length})` },
+    { to: "/compatibility", icon: Heart, label: "Compatibility" },
+    { to: "/comparison", icon: Scale, label: "Compare" },
+    { to: "/decoder", icon: Binary, label: "Decoder" },
+    { to: "/reference", icon: Book, label: "Learn" },
+  ];
 
   return (
     <nav className="bg-bg-secondary/80 backdrop-blur-xl border-b border-border-subtle text-text-primary px-6 py-4 sticky top-0 z-50 no-print">
       <div className="max-w-4xl mx-auto flex justify-between items-center">
-        <Link to="/" className="text-xl font-display flex items-center gap-3 group">
+        <Link to="/" className="text-xl font-display flex items-center gap-3 group" onClick={() => setIsOpen(false)}>
           <div className="w-8 h-8 relative">
             <div className="absolute inset-0 bg-accent-primary/20 blur-md rounded-full group-hover:bg-accent-primary/40 transition-all duration-500" />
             <img src="/logo.png" alt="Numerology Hero Card Logo" className="w-full h-full object-contain relative z-10 mix-blend-screen" />
@@ -26,51 +39,58 @@ function Navigation() {
             Numerology Hero Card
           </span>
         </Link>
-        <div className="flex gap-4 text-sm">
-          <Link
-            to="/"
-            className="flex items-center gap-1 hover:opacity-80 transition-opacity"
-          >
-            <PlusCircle size={16} />
-            New
-          </Link>
-          <Link
-            to="/profiles"
-            className="flex items-center gap-1 hover:opacity-80 transition-opacity"
-          >
-            <Library size={16} />
-            Library ({profiles.length})
-          </Link>
-          <Link
-            to="/compatibility"
-            className="flex items-center gap-1 hover:opacity-80 transition-opacity"
-          >
-            <Heart size={16} />
-            Compatibility
-          </Link>
-          <Link
-            to="/comparison"
-            className="flex items-center gap-1 hover:opacity-80 transition-opacity"
-          >
-            <Scale size={16} />
-            Compare
-          </Link>
-          <Link
-            to="/decoder"
-            className="flex items-center gap-1 hover:opacity-80 transition-opacity"
-          >
-            <Binary size={16} />
-            Decoder
-          </Link>
-          <Link
-            to="/reference"
-            className="flex items-center gap-1 hover:opacity-80 transition-opacity"
-          >
-            <Book size={16} />
-            Learn
-          </Link>
+
+        {/* Desktop Navigation */}
+        <div className="hidden md:flex gap-4 text-sm">
+          {links.map((link) => (
+            <Link
+              key={link.to}
+              to={link.to}
+              className={`flex items-center gap-1 hover:opacity-100 transition-all ${location.pathname === link.to ? 'text-accent-teal opacity-100' : 'opacity-70'
+                }`}
+            >
+              <link.icon size={16} />
+              {link.label}
+            </Link>
+          ))}
         </div>
+
+        {/* Mobile Hamburger */}
+        <button
+          className="md:hidden text-text-primary hover:text-accent-teal transition-colors p-1"
+          onClick={() => setIsOpen(!isOpen)}
+          aria-label="Toggle menu"
+        >
+          {isOpen ? <X size={24} /> : <Menu size={24} />}
+        </button>
       </div>
+
+      {/* Mobile Menu */}
+      <AnimatePresence>
+        {isOpen && (
+          <motion.div
+            initial={{ opacity: 0, height: 0 }}
+            animate={{ opacity: 1, height: 'auto' }}
+            exit={{ opacity: 0, height: 0 }}
+            className="md:hidden overflow-hidden border-t border-white/5 mt-4"
+          >
+            <div className="flex flex-col gap-2 py-4">
+              {links.map((link) => (
+                <Link
+                  key={link.to}
+                  to={link.to}
+                  onClick={() => setIsOpen(false)}
+                  className={`flex items-center gap-3 p-3 rounded-lg hover:bg-white/5 transition-colors ${location.pathname === link.to ? 'text-accent-teal bg-white/5' : 'text-text-secondary'
+                    }`}
+                >
+                  <link.icon size={20} />
+                  <span className="font-medium">{link.label}</span>
+                </Link>
+              ))}
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </nav>
   );
 }
