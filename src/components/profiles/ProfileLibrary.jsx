@@ -1,16 +1,24 @@
+import { useState } from 'react';
 import { motion } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
-import { Trash2, User, Calendar } from 'lucide-react';
+import { Trash2, Calendar, Edit3 } from 'lucide-react';
 import useProfileStore from '../../store/useProfileStore';
 import { getEsotericData } from '../../data/esotericData';
+import EditProfileModal from './EditProfileModal';
 
 export default function ProfileLibrary() {
     const navigate = useNavigate();
     const { profiles, setActiveProfile, deleteProfile } = useProfileStore();
+    const [editingProfile, setEditingProfile] = useState(null);
 
     const handleSelectProfile = (profileId) => {
         setActiveProfile(profileId);
         navigate(`/card/${profileId}`);
+    };
+
+    const handleEdit = (e, profile) => {
+        e.stopPropagation();
+        setEditingProfile(profile);
     };
 
     const handleDelete = (e, profileId) => {
@@ -96,19 +104,36 @@ export default function ProfileLibrary() {
                                     <span className="text-xs text-text-muted">
                                         {profile.calculationMethod}
                                     </span>
-                                    <button
-                                        onClick={(e) => handleDelete(e, profile.id)}
-                                        className="p-2 text-text-muted hover:text-red-400 transition-colors"
-                                        title="Delete profile"
-                                    >
-                                        <Trash2 size={18} />
-                                    </button>
+                                    <div className="flex gap-1">
+                                        <button
+                                            onClick={(e) => handleEdit(e, profile)}
+                                            className="p-2 text-text-muted hover:text-accent-primary transition-colors"
+                                            title="Edit profile"
+                                        >
+                                            <Edit3 size={18} />
+                                        </button>
+                                        <button
+                                            onClick={(e) => handleDelete(e, profile.id)}
+                                            className="p-2 text-text-muted hover:text-red-400 transition-colors"
+                                            title="Delete profile"
+                                        >
+                                            <Trash2 size={18} />
+                                        </button>
+                                    </div>
                                 </div>
                             </div>
                         </motion.div>
                     );
                 })}
             </div>
+
+            {/* Edit Modal */}
+            <EditProfileModal
+                profile={editingProfile}
+                isOpen={!!editingProfile}
+                onClose={() => setEditingProfile(null)}
+                onSave={() => setEditingProfile(null)}
+            />
         </div>
     );
 }

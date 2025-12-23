@@ -107,61 +107,76 @@ export default function InputForm({ onSubmit }) {
                 🔢 Numerology Hero Card
             </h1>
 
-            <form onSubmit={handleSubmit} className="space-y-6 glass-card p-8">
+            <form
+                onSubmit={handleSubmit}
+                className="space-y-6 glass-card p-8"
+                aria-label="Create numerology profile form"
+            >
                 {/* First Name */}
                 <div className="space-y-1">
-                    <label className="block text-sm font-medium text-text-secondary">
-                        First Name <span className="text-red-500">*</span>
+                    <label htmlFor="firstName" className="block text-sm font-medium text-text-secondary">
+                        First Name <span className="text-red-400" aria-label="required">*</span>
                     </label>
                     <input
+                        id="firstName"
                         type="text"
                         value={formData.firstName}
                         onChange={(e) => handleInputChange('firstName', e.target.value)}
                         className={`input-field ${errors.firstName ? 'border-red-500 focus:ring-red-500' : ''}`}
+                        aria-required="true"
+                        aria-invalid={!!errors.firstName}
+                        aria-describedby={errors.firstName ? 'firstName-error' : undefined}
                     />
                     {errors.firstName && (
-                        <p className="text-sm text-red-500">{errors.firstName}</p>
+                        <p id="firstName-error" className="text-sm text-red-400" role="alert">{errors.firstName}</p>
                     )}
                 </div>
 
                 {/* Middle Name */}
                 <div className="space-y-1">
-                    <label className="block text-sm font-medium text-text-secondary">
+                    <label htmlFor="middleName" className="block text-sm font-medium text-text-secondary">
                         Middle Name (Optional)
                     </label>
                     <input
+                        id="middleName"
                         type="text"
                         value={formData.middleName}
                         onChange={(e) => handleInputChange('middleName', e.target.value)}
                         className={`input-field ${errors.middleName ? 'border-red-500 focus:ring-red-500' : ''}`}
+                        aria-invalid={!!errors.middleName}
                     />
                     {errors.middleName && (
-                        <p className="text-sm text-red-500">{errors.middleName}</p>
+                        <p className="text-sm text-red-400" role="alert">{errors.middleName}</p>
                     )}
                 </div>
 
                 {/* Last Name */}
                 <div className="space-y-1">
-                    <label className="block text-sm font-medium text-text-secondary">
-                        Last Name <span className="text-red-500">*</span>
+                    <label htmlFor="lastName" className="block text-sm font-medium text-text-secondary">
+                        Last Name <span className="text-red-400" aria-label="required">*</span>
                     </label>
                     <input
+                        id="lastName"
                         type="text"
                         value={formData.lastName}
                         onChange={(e) => handleInputChange('lastName', e.target.value)}
                         className={`input-field ${errors.lastName ? 'border-red-500 focus:ring-red-500' : ''}`}
+                        aria-required="true"
+                        aria-invalid={!!errors.lastName}
+                        aria-describedby={errors.lastName ? 'lastName-error' : undefined}
                     />
                     {errors.lastName && (
-                        <p className="text-sm text-red-500">{errors.lastName}</p>
+                        <p id="lastName-error" className="text-sm text-red-400" role="alert">{errors.lastName}</p>
                     )}
                 </div>
 
                 {/* Nickname */}
                 <div className="space-y-1">
-                    <label className="block text-sm font-medium text-gray-700">
+                    <label htmlFor="nickname" className="block text-sm font-medium text-text-secondary">
                         Nickname (Optional)
                     </label>
                     <input
+                        id="nickname"
                         type="text"
                         value={formData.nickname}
                         onChange={(e) => handleInputChange('nickname', e.target.value)}
@@ -171,85 +186,106 @@ export default function InputForm({ onSubmit }) {
                 </div>
 
                 {/* Birthdate */}
-                <div className="space-y-2">
-                    <label className="block text-sm font-medium text-text-secondary">
-                        Birthdate <span className="text-red-500">*</span>
-                    </label>
+                <fieldset className="space-y-2">
+                    <legend className="block text-sm font-medium text-text-secondary">
+                        Birthdate <span className="text-red-400" aria-label="required">*</span>
+                    </legend>
 
                     <div className="grid grid-cols-3 gap-4">
-                        <select
-                            value={formData.birthdate.month}
-                            onChange={(e) => handleBirthdateChange('month', e.target.value)}
-                            className={`input-field ${errors.birthdate ? 'border-red-500' : ''}`}
-                        >
-                            <option value="">Month</option>
-                            {MONTHS.map(m => (
-                                <option key={m.value} value={m.value}>
-                                    {m.label}
-                                </option>
-                            ))}
-                        </select>
+                        <div>
+                            <label htmlFor="birth-month" className="sr-only">Month</label>
+                            <select
+                                id="birth-month"
+                                value={formData.birthdate.month}
+                                onChange={(e) => handleBirthdateChange('month', e.target.value)}
+                                className={`input-field ${errors.birthdate ? 'border-red-500' : ''}`}
+                                aria-required="true"
+                            >
+                                <option value="">Month</option>
+                                {MONTHS.map(m => (
+                                    <option key={m.value} value={m.value}>
+                                        {m.label}
+                                    </option>
+                                ))}
+                            </select>
+                        </div>
 
-                        <input
-                            type="number"
-                            placeholder="Day"
-                            value={formData.birthdate.day}
-                            onChange={(e) => handleBirthdateChange('day', e.target.value)}
-                            min="1"
-                            max="31"
-                            className={`input-field ${errors.birthdate ? 'border-red-500' : ''}`}
-                        />
+                        <div>
+                            <label htmlFor="birth-day" className="sr-only">Day</label>
+                            <input
+                                id="birth-day"
+                                type="number"
+                                placeholder="Day"
+                                value={formData.birthdate.day}
+                                onChange={(e) => handleBirthdateChange('day', e.target.value)}
+                                min="1"
+                                max="31"
+                                className={`input-field ${errors.birthdate ? 'border-red-500' : ''}`}
+                                aria-required="true"
+                            />
+                        </div>
 
-                        <select
-                            value={formData.birthdate.year}
-                            onChange={(e) => handleBirthdateChange('year', e.target.value)}
-                            className={`input-field ${errors.birthdate ? 'border-red-500' : ''}`}
-                        >
-                            <option value="">Year</option>
-                            {YEARS.map(y => (
-                                <option key={y} value={y}>
-                                    {y}
-                                </option>
-                            ))}
-                        </select>
+                        <div>
+                            <label htmlFor="birth-year" className="sr-only">Year</label>
+                            <select
+                                id="birth-year"
+                                value={formData.birthdate.year}
+                                onChange={(e) => handleBirthdateChange('year', e.target.value)}
+                                className={`input-field ${errors.birthdate ? 'border-red-500' : ''}`}
+                                aria-required="true"
+                            >
+                                <option value="">Year</option>
+                                {YEARS.map(y => (
+                                    <option key={y} value={y}>
+                                        {y}
+                                    </option>
+                                ))}
+                            </select>
+                        </div>
                     </div>
 
                     {errors.birthdate && (
-                        <p className="text-sm text-red-500">{errors.birthdate}</p>
+                        <p className="text-sm text-red-400" role="alert">{errors.birthdate}</p>
                     )}
-                </div>
+                </fieldset>
 
                 {/* Calculation Method */}
-                <div className="space-y-2">
-                    <label className="block text-sm font-medium text-text-secondary">
+                <fieldset className="space-y-2">
+                    <legend className="block text-sm font-medium text-text-secondary">
                         Calculation Method
-                    </label>
-                    <div className="flex gap-4">
+                    </legend>
+                    <div className="flex gap-4" role="radiogroup" aria-label="Calculation method">
                         <label className="flex items-center cursor-pointer">
                             <input
                                 type="radio"
+                                name="calculationMethod"
                                 value="pythagorean"
                                 checked={calculationMethod === 'pythagorean'}
                                 onChange={(e) => setCalculationMethod(e.target.value)}
-                                className="mr-2"
+                                className="mr-2 accent-accent-primary"
                             />
-                            <span>Pythagorean</span>
+                            <span className="text-text-primary">Pythagorean</span>
                         </label>
                         <label className="flex items-center cursor-pointer">
                             <input
                                 type="radio"
+                                name="calculationMethod"
                                 value="chaldean"
                                 checked={calculationMethod === 'chaldean'}
                                 onChange={(e) => setCalculationMethod(e.target.value)}
-                                className="mr-2"
+                                className="mr-2 accent-accent-primary"
                             />
-                            <span>Chaldean</span>
+                            <span className="text-text-primary">Chaldean</span>
                         </label>
                     </div>
-                </div>
+                </fieldset>
 
                 {/* Submit Button */}
-                <button type="submit" className="btn-primary w-full">
+                <button
+                    type="submit"
+                    className="btn-primary w-full"
+                    aria-label="Generate your numerology hero card"
+                >
                     Generate Hero Card
                 </button>
             </form>
