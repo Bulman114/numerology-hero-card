@@ -5,6 +5,7 @@ import { motion } from 'framer-motion';
 import useProfileStore from '../../store/useProfileStore';
 import { getCompatibilityScore, getCompatibilityInsights } from '../../data/compatibility';
 import { getEsotericData } from '../../data/esotericData';
+import { getLifePathProfile } from '../../data/lifePathProfiles';
 import Button from '../ui/Button';
 import HarmonyScore from './HarmonyScore';
 
@@ -117,11 +118,17 @@ const CompatibilityChecker = () => {
                                             animate={{ opacity: 1, y: 0 }}
                                             className="mt-4 p-6 bg-bg-elevated rounded-2xl border border-border-subtle"
                                         >
-                                            <div className="text-4xl font-display font-bold text-accent-primary text-center">
+                                            <div
+                                                className="text-4xl font-display font-bold text-center mx-auto w-16 h-16 rounded-full flex items-center justify-center text-white"
+                                                style={{
+                                                    backgroundColor: getEsotericData(profile1.numbers.lifePath.value).color,
+                                                    boxShadow: `0 0 20px ${getEsotericData(profile1.numbers.lifePath.value).color}40`
+                                                }}
+                                            >
                                                 {profile1.numbers.lifePath.value}
                                             </div>
-                                            <div className="text-center text-xs font-mono uppercase tracking-widest text-text-muted mt-2">
-                                                {getEsotericData(profile1.numbers.lifePath.value).keywords.join(' • ')}
+                                            <div className="text-center text-xs font-bold uppercase tracking-widest text-accent-primary mt-3">
+                                                {getLifePathProfile(profile1.numbers.lifePath.value)?.archetype || 'Life Path ' + profile1.numbers.lifePath.value}
                                             </div>
                                         </motion.div>
                                     )}
@@ -150,11 +157,17 @@ const CompatibilityChecker = () => {
                                             animate={{ opacity: 1, y: 0 }}
                                             className="mt-4 p-6 bg-bg-elevated rounded-2xl border border-border-subtle"
                                         >
-                                            <div className="text-4xl font-display font-bold text-accent-teal text-center">
+                                            <div
+                                                className="text-4xl font-display font-bold text-center mx-auto w-16 h-16 rounded-full flex items-center justify-center text-white"
+                                                style={{
+                                                    backgroundColor: getEsotericData(profile2.numbers.lifePath.value).color,
+                                                    boxShadow: `0 0 20px ${getEsotericData(profile2.numbers.lifePath.value).color}40`
+                                                }}
+                                            >
                                                 {profile2.numbers.lifePath.value}
                                             </div>
-                                            <div className="text-center text-xs font-mono uppercase tracking-widest text-text-muted mt-2">
-                                                {getEsotericData(profile2.numbers.lifePath.value).keywords.join(' • ')}
+                                            <div className="text-center text-xs font-bold uppercase tracking-widest text-accent-teal mt-3">
+                                                {getLifePathProfile(profile2.numbers.lifePath.value)?.archetype || 'Life Path ' + profile2.numbers.lifePath.value}
                                             </div>
                                         </motion.div>
                                     )}

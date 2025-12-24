@@ -3,6 +3,8 @@ import { motion } from 'framer-motion';
 import { Download, FileText, Image, Info } from 'lucide-react';
 import { getEsotericData } from '../../data/esotericData';
 import { getNumberMeaning } from '../../data/numberMeanings';
+import { getLifePathProfile } from '../../data/lifePathProfiles';
+import { getRotatingQuote, getRotatedTraits } from '../../utils/contentRotation';
 import { exportToPNG, exportToPDF } from '../../utils/export';
 
 export default function HeroCard({ profile }) {
@@ -12,6 +14,8 @@ export default function HeroCard({ profile }) {
     if (!profile) return null;
 
     const esotericData = getEsotericData(profile.numbers.lifePath.value);
+    const lifePathProfile = getLifePathProfile(profile.numbers.lifePath.value);
+    const rotatingQuote = getRotatingQuote(lifePathProfile?.keynote);
 
     const fullName = [
         profile.firstName,
@@ -122,12 +126,25 @@ export default function HeroCard({ profile }) {
                 </div>
 
                 {/* Life Path Section - Compact Hero */}
-                <div className="relative z-10 px-6 md:px-24 py-8 flex items-center justify-between gap-8 bg-gradient-to-b from-accent-primary/10 to-transparent">
-                    <div className="flex-1">
-                        <div className="text-sm font-bold text-accent-primary uppercase tracking-widest mb-2">Life Path Number</div>
-                        <div className="text-text-secondary text-sm leading-relaxed max-w-lg">
-                            {esotericData.keywords.join(' • ')}
+                <div className="relative z-10 px-6 md:px-24 py-8 flex flex-col md:flex-row items-start md:items-center justify-between gap-6 bg-gradient-to-b from-accent-primary/10 to-transparent">
+                    <div className="flex-1 space-y-3">
+                        <div className="flex items-center gap-3">
+                            <div className="text-sm font-bold text-accent-primary uppercase tracking-widest">Life Path Number</div>
+                            {lifePathProfile?.archetype && (
+                                <span className="text-xs text-text-muted italic">— {lifePathProfile.archetype}</span>
+                            )}
                         </div>
+                        <p className="text-text-secondary text-sm leading-relaxed max-w-lg">
+                            {lifePathProfile?.coreEssence || esotericData.keywords.join(' • ')}
+                        </p>
+                        {rotatingQuote?.text && (
+                            <blockquote className="text-text-muted text-xs italic border-l-2 border-accent-primary/30 pl-3 max-w-md">
+                                <span className="text-accent-primary/70 text-[10px] uppercase tracking-wide block mb-1">
+                                    {rotatingQuote.type}
+                                </span>
+                                "{rotatingQuote.text.slice(0, 150)}{rotatingQuote.text.length > 150 ? '...' : ''}"
+                            </blockquote>
+                        )}
                     </div>
 
                     <motion.div

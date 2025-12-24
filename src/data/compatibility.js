@@ -1,3 +1,6 @@
+import { getLifePathProfile } from './lifePathProfiles';
+import { getRotatedItems } from '../utils/contentRotation';
+
 export const COMPATIBILITY_MATRIX = {
     1: { 1: 50, 2: 70, 3: 85, 4: 60, 5: 90, 6: 75, 7: 65, 8: 55, 9: 80, 11: 75, 22: 70, 33: 85 },
     2: { 1: 70, 2: 60, 3: 75, 4: 85, 5: 65, 6: 90, 7: 70, 8: 80, 9: 85, 11: 85, 22: 80, 33: 90 },
@@ -13,6 +16,7 @@ export const COMPATIBILITY_MATRIX = {
     33: { 1: 85, 2: 90, 3: 85, 4: 75, 5: 80, 6: 95, 7: 85, 8: 80, 9: 95, 11: 95, 22: 90, 33: 90 },
 };
 
+// Static insights for specific pairings (fallback)
 export const COMPATIBILITY_INSIGHTS = {
     '1-1': {
         strengths: ['Mutual independence', 'Shared leadership goals', 'Strong drive'],
@@ -72,20 +76,128 @@ export function getCompatibilityScore(num1, num2) {
 }
 
 /**
- * Get compatibility insights for a pair
+ * Get enhanced compatibility insights by combining profile data
  * @param {number} num1
  * @param {number} num2
- * @returns {object} - { strengths, challenges, tips }
+ * @returns {object} - Enhanced insights object
  */
 export function getCompatibilityInsights(num1, num2) {
     const key1 = `${Math.min(num1, num2)}-${Math.max(num1, num2)}`;
     const key2 = `${num1}-${num2}`;
+    const staticInsights = COMPATIBILITY_INSIGHTS[key1] || COMPATIBILITY_INSIGHTS[key2];
 
-    return COMPATIBILITY_INSIGHTS[key1] || COMPATIBILITY_INSIGHTS[key2] || {
-        strengths: ['Opportunity for growth through differences', 'Learning from each other'],
-        challenges: ['Requires conscious effort to understand each other', 'Different approaches'],
-        tips: ['Focus on shared goals', 'Practice patience and empathy', 'Celebrate differences'],
+    const profile1 = getLifePathProfile(num1);
+    const profile2 = getLifePathProfile(num2);
+
+    // Find compatibility data from the profiles themselves
+    const findCompatibility = (profile, targetNum) => {
+        if (!profile?.compatibility) return null;
+        const categories = ['mostCompatible', 'challenging', 'complex'];
+        for (const cat of categories) {
+            const match = profile.compatibility[cat]?.find(c => c.number === targetNum);
+            if (match) return { ...match, category: cat };
+        }
+        return null;
     };
+
+    const match1 = findCompatibility(profile1, num2);
+    const match2 = findCompatibility(profile2, num1);
+
+    // Build dynamic insights from profile data
+    const dynamicInsights = {
+        strengths: [],
+        challenges: [],
+        tips: [],
+        romanticDynamics: [],
+        compatibility1: match1,
+        compatibility2: match2,
+    };
+
+    // Add romantic traits from both profiles
+    if (profile1?.relationships?.romantic?.traits) {
+        const traits = getRotatedItems(profile1.relationships.romantic.traits, 2, `romantic-${num1}`);
+        dynamicInsights.romanticDynamics.push({
+            number: num1,
+            archetype: profile1.archetype,
+            traits,
+        });
+    }
+    if (profile2?.relationships?.romantic?.traits) {
+        const traits = getRotatedItems(profile2.relationships.romantic.traits, 2, `romantic-${num2}`);
+        dynamicInsights.romanticDynamics.push({
+            number: num2,
+            archetype: profile2.archetype,
+            traits,
+        });
+    }
+
+    // If we have compatibility data, use it for insights
+    if (match1) {
+        if (match1.category === 'mostCompatible') {
+            dynamicInsights.strengths.push(match1.reason);
+        } else if (match1.category === 'challenging') {
+            dynamicInsights.challenges.push(match1.reason);
+        } else {
+            dynamicInsights.complexDynamic = match1.reason;
+        }
+    }
+
+    if (match2) {
+        if (match2.category === 'mostCompatible') {
+            dynamicInsights.strengths.push(match2.reason);
+        } else if (match2.category === 'challenging') {
+            dynamicInsights.challenges.push(match2.reason);
+        }
+    }
+
+    // Add static insights if available
+    if (staticInsights) {
+        dynamicInsights.strengths = [...dynamicInsights.strengths, ...staticInsights.strengths];
+        dynamicInsights.challenges = [...dynamicInsights.challenges, ...staticInsights.challenges];
+        dynamicInsights.tips = [...staticInsights.tips];
+    } else {
+        // Default tips based on score
+        const score = getCompatibilityScore(num1, num2);
+        if (score >= 80) {
+            dynamicInsights.tips = [
+                'You share a natural resonance - nurture it with intention',
+                'Use your combined strengths for shared goals',
+                'Create space for individual growth too',
+            ];
+        } else if (score >= 60) {
+            dynamicInsights.tips = [
+                'Focus on what you can learn from each other',
+                'Embrace your differences as opportunities',
+                'Practice active listening and patience',
+            ];
+        } else {
+            dynamicInsights.tips = [
+                'This pairing requires conscious effort and understanding',
+                'Celebrate small wins and moments of connection',
+                'Consider finding complementary activities you both enjoy',
+            ];
+        }
+    }
+
+    // Add generic insights if we have no profile-specific ones
+    if (dynamicInsights.strengths.length === 0) {
+        dynamicInsights.strengths = [
+            'Opportunity for growth through differences',
+            'Learning from each other\'s perspectives',
+        ];
+    }
+    if (dynamicInsights.challenges.length === 0) {
+        dynamicInsights.challenges = [
+            'Requires conscious effort to understand each other',
+            'Different approaches to life may create friction',
+        ];
+    }
+
+    // Deduplicate
+    dynamicInsights.strengths = [...new Set(dynamicInsights.strengths)];
+    dynamicInsights.challenges = [...new Set(dynamicInsights.challenges)];
+
+    return dynamicInsights;
 }
 
 /**
@@ -94,12 +206,12 @@ export function getCompatibilityInsights(num1, num2) {
  * @returns {string}
  */
 export function getCompatibilityLevel(score) {
-    if (score >= 90) return 'Exceptional';
-    if (score >= 80) return 'Excellent';
-    if (score >= 70) return 'Good';
-    if (score >= 60) return 'Moderate';
+    if (score >= 90) return 'Soulmate Energy';
+    if (score >= 80) return 'Deep Resonance';
+    if (score >= 70) return 'Harmonious';
+    if (score >= 60) return 'Growth Potential';
     if (score >= 50) return 'Challenging';
-    return 'Difficult';
+    return 'Karmic Lesson';
 }
 
 /**
@@ -112,4 +224,30 @@ export function getCompatibilityColor(score) {
     if (score >= 70) return '#2ECC71'; // Green - Good
     if (score >= 55) return '#F39C12'; // Orange - Moderate
     return '#E74C3C'; // Red - Challenging
+}
+
+/**
+ * Get detailed relationship summary
+ * @param {number} num1
+ * @param {number} num2
+ * @returns {object}
+ */
+export function getRelationshipSummary(num1, num2) {
+    const profile1 = getLifePathProfile(num1);
+    const profile2 = getLifePathProfile(num2);
+    const score = getCompatibilityScore(num1, num2);
+    const level = getCompatibilityLevel(score);
+
+    return {
+        score,
+        level,
+        archetype1: profile1?.archetype || `Life Path ${num1}`,
+        archetype2: profile2?.archetype || `Life Path ${num2}`,
+        coreEssence1: profile1?.coreEssence,
+        coreEssence2: profile2?.coreEssence,
+        bestWith1: profile1?.relationships?.romantic?.bestWith,
+        bestWith2: profile2?.relationships?.romantic?.bestWith,
+        isBestMatch: profile1?.relationships?.romantic?.bestWith?.includes(num2) ||
+            profile2?.relationships?.romantic?.bestWith?.includes(num1),
+    };
 }

@@ -115,6 +115,9 @@ export const NUMBER_MEANINGS = {
     },
 };
 
+import { LIFE_PATH_PROFILES } from './lifePathProfiles';
+import { getRotatedItems } from '../utils/contentRotation';
+
 /**
  * Get meaning for a specific number
  * @param {number} num - The number to look up
@@ -122,6 +125,47 @@ export const NUMBER_MEANINGS = {
  */
 export function getNumberMeaning(num) {
     return NUMBER_MEANINGS[num] || NUMBER_MEANINGS[1];
+}
+
+/**
+ * Get enhanced meaning with rich content from profiles
+ * Includes content rotation for variety
+ * @param {number} num - The number to look up
+ * @param {object} options - Options for content selection
+ * @returns {object} - Enhanced meaning object
+ */
+export function getEnhancedMeaning(num, options = {}) {
+    const baseMeaning = NUMBER_MEANINGS[num] || NUMBER_MEANINGS[1];
+    const profile = LIFE_PATH_PROFILES[num];
+
+    if (!profile) return baseMeaning;
+
+    const { context = 'default', rotateContent = true } = options;
+    const seed = rotateContent ? `${context}-${new Date().toDateString()}` : null;
+
+    return {
+        ...baseMeaning,
+        archetype: profile.archetype,
+        coreEssence: profile.coreEssence,
+        // Rotated content for variety
+        strengths: rotateContent
+            ? getRotatedItems(profile.personality?.fundamental || baseMeaning.strengths, 5, seed)
+            : profile.personality?.fundamental?.slice(0, 5) || baseMeaning.strengths,
+        challenges: rotateContent
+            ? getRotatedItems(profile.personality?.shadow || baseMeaning.challenges, 5, seed)
+            : profile.personality?.shadow?.slice(0, 5) || baseMeaning.challenges,
+        careers: rotateContent
+            ? getRotatedItems(profile.career?.paths?.map(p => p.title) || baseMeaning.careers, 5, seed)
+            : profile.career?.paths?.slice(0, 5).map(p => p.title) || baseMeaning.careers,
+        // Static content
+        lifePurpose: profile.keynote?.lifeLesson || baseMeaning.lifePurpose,
+        shadowSide: profile.personality?.shadow?.[0] || baseMeaning.shadowSide,
+        // Additional rich content
+        keynote: profile.keynote,
+        compatibility: profile.compatibility,
+        health: profile.health,
+        famousExamples: profile.famousExamples,
+    };
 }
 
 /**

@@ -95,14 +95,16 @@ app/src/
 │       └── Tooltip.jsx           # Hover tooltips
 ├── data/
 │   ├── esotericData.js           # Tarot/planet correspondences
-│   ├── numberMeanings.js         # Full number interpretations
-│   └── compatibility.js          # Compatibility matrix
+│   ├── numberMeanings.js         # Number interpretations + getEnhancedMeaning()
+│   ├── lifePathProfiles.js       # Comprehensive Life Path data (12 profiles)
+│   └── compatibility.js          # Compatibility matrix + rich insights
 ├── store/
 │   └── useProfileStore.js        # Zustand state
 ├── utils/
 │   ├── numerology.js             # Core calculations
 │   ├── numerology.test.js        # Unit tests (19 tests)
 │   ├── decoder.js                # Universal Decoder analysis logic
+│   ├── contentRotation.js        # Dynamic content selection utilities
 │   ├── validation.js             # Input validation
 │   └── export.js                 # PNG/PDF/JSON export
 ├── App.jsx                       # Routes + navigation
@@ -161,6 +163,7 @@ app/src/
 - [x] ReferenceLibrary, NumberMeanings, MethodsGuide
 - [x] Route `/reference`
 - [x] Modernized to "Modern Cyber-Mystic" design theme
+- [x] NumberMeanings enhanced with 5 tabbed sections (Overview, Personality, Relationships, Career, Growth)
 
 **Phase 3B: Export Enhancements**
 - [x] ShareButtons.jsx - Social sharing (Twitter, Facebook, Email, native)
@@ -184,7 +187,9 @@ app/src/
 
 **Data Files**
 - [x] numberMeanings.js - Full interpretations for 1-9, 11, 22, 33
-- [x] compatibility.js - Matrix + insights
+- [x] lifePathProfiles.js - Comprehensive profiles with 15+ categories per number
+- [x] compatibility.js - Matrix + rich insights from profiles
+- [x] contentRotation.js - Utilities for dynamic content selection
 
 **Styling**
 - [x] Modern Digital / Ethereal Tech theme (cyan/lavender + sans-serif fonts)
@@ -198,17 +203,15 @@ app/src/
 
 ### 🔲 REMAINING
 
-**Phase 2D: Profile Enhancements**
-- [ ] ProfileCard.jsx - Extracted individual card component
-
 **Phase 3D: Accessibility**
 - [x] ARIA labels (InputForm)
 - [ ] Keyboard navigation
 - [ ] eslint-plugin-jsx-a11y
 - [ ] Color contrast audit
 
-**Card Sub-Components (Optional Refactoring)**
-- [ ] CardHeader, CoreNumbers, EsotericSection, ArchetypeReference
+**Optional Refactoring**
+- [ ] ProfileCard.jsx - Extracted individual card component
+- [ ] CardHeader, CoreNumbers, EsotericSection - Sub-components for HeroCard
 
 ---
 
@@ -231,8 +234,10 @@ git push         # Vercel auto-deploys
 | `src/index.css` | Theme config (Modern Digital / Ethereal Tech) |
 | `src/utils/numerology.js` | All calculation functions |
 | `src/utils/decoder.js` | Universal Decoder analysis logic |
-| `src/data/numberMeanings.js` | Number interpretations |
-| `src/data/compatibility.js` | Compatibility matrix |
+| `src/utils/contentRotation.js` | Dynamic content selection for variety |
+| `src/data/lifePathProfiles.js` | Comprehensive Life Path profiles (primary data source) |
+| `src/data/numberMeanings.js` | Number interpretations + enhanced getter |
+| `src/data/compatibility.js` | Compatibility matrix + profile-based insights |
 | `src/store/useProfileStore.js` | State management |
 | `vite.config.js` | Vite config with Tailwind v4 + PWA plugins |
 
